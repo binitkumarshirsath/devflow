@@ -42,6 +42,7 @@ const config: Config = {
       fontFamily: {
         inter: ["var(--font-inter)"],
         spaceGrotesk: ["var(--font-spaceGrotesk)"],
+        montserrat: ["var(--font-montserrat)"],
       },
       boxShadow: {
         "light-100":
