@@ -3,7 +3,9 @@ import { UserButton } from "@clerk/nextjs";
 export default function Home() {
   return (
     <div>
-      <h1>Hello world</h1>
+      <div className="font-montserrat">Hello world</div>
+      <div className="font-spaceGrotesk">Hello world</div>
+      <div className="font-inter">Hello world</div>
       <UserButton afterSignOutUrl="/" />
     </div>
   );
