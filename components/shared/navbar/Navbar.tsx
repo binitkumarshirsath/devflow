@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { UserButton, SignedIn } from "@clerk/nextjs";
 import Sidebar from "./Sidebar";
+import GlobalSearch from "./GlobalSearch";
 
 const Navbar = () => {
   return (
@@ -19,7 +20,7 @@ const Navbar = () => {
           Dev <span className="text-primary-500">Flow</span>
         </p>
       </Link>
-      <div>SearchBar</div>
+      <GlobalSearch />
       <div className="flex items-center gap-2">
         <ModeToggle />
         <SignedIn>

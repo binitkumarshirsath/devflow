@@ -51,7 +51,8 @@ const Sidebar = () => {
             const isActive = link.route === pathname;
 
             return (
-              <div
+              <Link
+                href={link.route}
                 key={index}
                 className={`flex gap-4 rounded-lg
                 p-5 font-montserrat ${isActive ? "primary-gradient" : ""}`}
@@ -61,10 +62,10 @@ const Sidebar = () => {
                   width={20}
                   height={20}
                   alt={link.label}
-                  className="invert-colors"
+                  className={`${isActive ? "" : "invert-colors"}`}
                 />
-                <Link href={link.route}>{link.label}</Link>
-              </div>
+                <span>{link.label}</span>
+              </Link>
             );
           })}
         </SheetDescription>
