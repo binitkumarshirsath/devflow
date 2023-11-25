@@ -3,6 +3,7 @@ import { ModeToggle } from "./ThemeToggle";
 import Link from "next/link";
 import Image from "next/image";
 import { UserButton, SignedIn } from "@clerk/nextjs";
+import Sidebar from "./Sidebar";
 
 const Navbar = () => {
   return (
@@ -34,6 +35,7 @@ const Navbar = () => {
             }}
           />
         </SignedIn>
+        <Sidebar />
       </div>
     </nav>
   );
