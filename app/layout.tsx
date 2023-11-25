@@ -2,6 +2,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Metadata } from "next";
 import React from "react";
 import { inter, montserrat, spaceGrotesk } from "../lib/fonts/font";
+
+import { ThemeProvider } from "@/components/global/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,21 +14,24 @@ export const metadata: Metadata = {
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider
-      appearance={{
-        elements: {
-          formButtonPrimary: "primary-gradient",
-          footerActionLink: "primary-text-gradient hover:text-primary-500",
-        },
-      }}
-    >
-      <html lang="en">
-        <body
-          className={`${inter.variable} ${spaceGrotesk.variable} ${montserrat.variable}`}
-        >
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${spaceGrotesk.variable} ${montserrat.variable}`}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ClerkProvider
+            appearance={{
+              elements: {
+                formButtonPrimary: "primary-gradient",
+                footerActionLink:
+                  "primary-text-gradient hover:text-primary-500",
+              },
+            }}
+          >
+            {children}
+          </ClerkProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
