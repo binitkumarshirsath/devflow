@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import React from "react";
 import { inter, montserrat, spaceGrotesk } from "../lib/fonts/font";
 
-import { ThemeProvider } from "@/components/global/ThemeProvider";
+import { ThemeProvider } from "@/components/Theme/ThemeProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${montserrat.variable}`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <ClerkProvider
             appearance={{
               elements: {

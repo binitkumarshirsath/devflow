@@ -11,7 +11,9 @@ const SearchBar = ({ placeholder, name, classList }: Props) => {
   return (
     <div className=" relative  flex h-full w-full items-center md:w-[600px]  ">
       <input
-        className={`placeholder background-light900_dark300 mx-auto  h-12 w-full rounded-2xl border-white   pl-12 pr-4  font-spaceGrotesk font-medium text-dark-400 focus:outline-none dark:text-white ${classList} `}
+        className={`placeholder 
+        background-light900_dark300
+         h-12 w-full rounded-lg border-none pl-12  pr-4  font-spaceGrotesk font-medium focus:outline-none focus:ring-0   focus:ring-offset-0 ${classList} `}
         type="text"
         name={name}
         placeholder={placeholder}

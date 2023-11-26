@@ -20,16 +20,16 @@ function MobileFilter({ filters }: Props) {
       <SelectTrigger
         className="placeholder 
       background-light900_dark300
-      mt-4 h-12 w-full rounded-lg border-none pl-10  pr-4 font-spaceGrotesk  font-medium focus:outline-none focus:ring-0   focus:ring-offset-0 md:hidden"
+       h-12 w-full rounded-lg border-none pl-10  pr-4 font-spaceGrotesk  font-medium focus:outline-none focus:ring-0   focus:ring-offset-0 md:hidden"
       >
         <SelectValue placeholder="Select a Filter" />
       </SelectTrigger>
       <SelectContent className="border-none outline-none focus:no-underline">
         <SelectGroup>
-          {filters.map((filter) => {
+          {filters.map((filter, index) => {
             return (
-              <SelectItem key={filter.id} value={filter.value}>
-                {filter.label}
+              <SelectItem key={index} value={filter.value}>
+                {filter.name}
               </SelectItem>
             );
           })}

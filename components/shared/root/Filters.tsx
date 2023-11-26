@@ -10,10 +10,10 @@ interface Props {
 const Filters = ({ filters }: Props) => {
   return (
     <div className="mt-6 flex gap-4 max-md:hidden">
-      {filters.map((filter) => {
+      {filters.map((filter, index) => {
         return (
-          <Link key={filter.id} href={filter.label}>
-            <Button className="tab font-montserrat">{filter.label}</Button>
+          <Link key={index} href={filter.name}>
+            <Button className="tab font-montserrat">{filter.name}</Button>
           </Link>
         );
       })}

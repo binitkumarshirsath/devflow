@@ -4,6 +4,7 @@
 @import url("../styles/theme.css");
 body {
   font-family: "Inter", sans-serif;
+  box-sizing: border-box;
 }
 @layer utilities {
   .flex-center {

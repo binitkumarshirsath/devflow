@@ -5,9 +5,8 @@ export interface SidebarLink {
   label: string;
 }
 export interface Filter {
-  id: number;
   value: string;
-  label: string;
+  name: string;
 }
 
 export interface Job {
