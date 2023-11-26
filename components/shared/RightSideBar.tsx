@@ -46,7 +46,7 @@ const tags = [
 
 const RightSideBar = () => {
   return (
-    <aside className="background-light900_dark200 custom-scrollbar fixed right-0  top-0 h-screen overflow-y-auto px-4 max-xl:hidden xl:w-[325px]">
+    <aside className="background-light900_dark200 custom-scrollbar sticky right-0  top-0 h-screen overflow-y-auto px-4 max-xl:hidden xl:w-[325px]">
       <div className="mt-32 px-3 py-4">
         <h1 className="h3-bold  font-spaceGrotesk">Top Questions</h1>
 
