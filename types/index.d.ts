@@ -4,6 +4,12 @@ export interface SidebarLink {
   route: string;
   label: string;
 }
+export interface Filter {
+  id: number;
+  value: string;
+  label: string;
+}
+
 export interface Job {
   id?: string;
   employer_name?: string;

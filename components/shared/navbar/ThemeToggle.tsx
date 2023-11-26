@@ -27,7 +27,7 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className=" mt-3 min-w-[120px] cursor-pointer rounded py-2 dark:border-dark-400 dark:bg-dark-300"
+        className="background-light850_dark100 mt-3 min-w-[120px] cursor-pointer rounded py-2 "
       >
         {themes.map((link, index) => {
           return (
