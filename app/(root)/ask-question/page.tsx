@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
+import { Editor } from "@tinymce/tinymce-react";
 import * as z from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +19,8 @@ import {
 import { Input } from "@/components/ui/input";
 
 const AskAQuestion = () => {
+  const editorRef = useRef(null);
+
   const form = useForm<z.infer<typeof questionSchema>>({
     resolver: zodResolver(questionSchema),
     defaultValues: {
@@ -58,6 +61,64 @@ const AskAQuestion = () => {
                   <FormDescription className="paragraph-regular text-light-500">
                     Be specific and imagine you&epos;re asking a question to
                     another person.
+                  </FormDescription>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="mt-5">
+                  <FormLabel>
+                    Add question description{" "}
+                    <sup className="text-primary-500">*</sup>
+                  </FormLabel>
+                  <FormControl className="bg-dark-400">
+                    <Editor
+                      apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+                      onInit={(evt, editor) => (editorRef.current = editor)}
+                      initialValue="Start describing your question..."
+                      init={{
+                        height: 500,
+                        menubar: false,
+                        plugins: [
+                          "codesample",
+                          "advlist",
+                          "autolink",
+                          "lists",
+                          "link",
+                          "image",
+                          "charmap",
+                          "preview",
+                          "anchor",
+                          "searchreplace",
+                          "visualblocks",
+                          "code",
+                          "fullscreen",
+                          "insertdatetime",
+                          "media",
+                          "table",
+                          "code",
+                          "help",
+                          "wordcount",
+                        ],
+                        toolbar:
+                          "undo redo | blocks | " +
+                          "bold italic forecolor " +
+                          " | codesample  | " +
+                          "alignleft aligncenter " +
+                          "alignright alignjustify | bullist numlist outdent indent | " +
+                          "removeformat | help",
+                        content_style:
+                          "body { font-family:Inter,Arial,sans-serif; font-size:14px }",
+                      }}
+                    />
+                  </FormControl>
+                  <FormDescription className="paragraph-regular text-light-500">
+                    Introduce the problem and expand on what you put in the
+                    title. Minimum 100 characters.
                   </FormDescription>
                   <FormMessage className="text-red-500" />
                 </FormItem>

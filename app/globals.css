@@ -6,6 +6,20 @@ body {
   font-family: "Inter", sans-serif;
   box-sizing: border-box;
 }
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ff7000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #fff1e6;
+}
+
 @layer utilities {
   .flex-center {
     @apply flex justify-center items-center;
