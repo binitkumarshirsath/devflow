@@ -1,13 +1,14 @@
 import Link from "next/link";
+
 import React from "react";
 
-interface Props {
+export interface CTAButtonProps {
   label: string;
   href: string;
   classList?: string;
 }
 
-const CTAButton = ({ classList, label, href }: Props) => {
+const CTAButton = ({ classList, label, href }: CTAButtonProps) => {
   return (
     <Link
       href={href}
