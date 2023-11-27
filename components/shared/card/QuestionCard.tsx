@@ -1,8 +1,8 @@
 import { QuestionProps } from "@/app/(root)/(home)/page";
 import { formatDate } from "@/lib/utils";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Metric from "./Metric";
 
 interface Props {
   question: QuestionProps;
@@ -32,49 +32,37 @@ const QuestionCard = ({ question }: Props) => {
       </div>
       {/* Info row */}
       <div className="mt-3 flex items-center justify-between text-sm">
-        <div className="flex gap-1">
-          <Image
-            alt="author"
-            src={"/assets/icons/user.svg"}
-            width={20}
-            height={20}
-          />
-          <div>
-            {question.author.name}
-            {" | "}
-            <span className="max-sm:hidden">
-              {formatDate(question.createdAt)}
-            </span>
-          </div>
-        </div>
+        <Metric
+          src="/assets/icons/user.svg"
+          alt="userpfp"
+          createdAt={question.createdAt}
+          label={question.author.name}
+          size={15}
+          href={`author/${question.author.id}`}
+        />
         <div className="flex gap-2 ">
-          <div className="flex gap-1">
-            <Image
-              alt="votes"
-              src={"/assets/icons/like.svg"}
-              width={20}
-              height={20}
-            />
-            {question.votes}
-          </div>
-          <div className="flex gap-1">
-            <Image
-              alt="votes"
-              src={"/assets/icons/message.svg"}
-              width={20}
-              height={20}
-            />
-            {question.answers.length}
-          </div>
-          <div className="flex gap-1">
-            <Image
-              alt="viwes"
-              src={"/assets/icons/eye.svg"}
-              width={20}
-              height={20}
-            />
-            {question.views}
-          </div>
+          <Metric
+            alt="votes"
+            src={"/assets/icons/like.svg"}
+            createdAt={question.createdAt}
+            label={" Votes"}
+            count={question.votes}
+            size={15}
+          />
+          <Metric
+            alt="comments"
+            src={"/assets/icons/message.svg"}
+            label={"Comments"}
+            size={15}
+            count={question.answers.length}
+          />
+          <Metric
+            alt="views"
+            count={question.views}
+            src={"/assets/icons/eye.svg"}
+            label={" Views"}
+            size={15}
+          />
         </div>
       </div>
     </div>
