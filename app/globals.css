@@ -17,7 +17,7 @@ body {
     @apply flex justify-start items-center;
   }
   .card-wrapper {
-    @apply bg-light-900 dark:dark-gradient shadow-light-100 dark:shadow-dark-100;
+    @apply bg-light-900 dark:dark-gradient shadow-sm;
   }
   .btn {
     @apply bg-light-800 dark:bg-dark-300 !important;
@@ -48,7 +48,7 @@ body {
     @apply focus-visible:ring-0 focus-visible:ring-transparent focus;
   }
 }
-ctive-theme {
+.active-theme {
   filter: invert(53%) sepia(98%) saturate(3332%) hue-rotate(0deg)
     brightness(104%) contrast(106%) !important;
 }

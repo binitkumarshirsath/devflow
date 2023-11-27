@@ -40,7 +40,7 @@ const QuestionCard = ({ question }: Props) => {
           size={15}
           href={`author/${question.author.id}`}
         />
-        <div className="flex gap-2 ">
+        <div className="flex gap-4">
           <Metric
             alt="votes"
             src={"/assets/icons/like.svg"}
@@ -52,7 +52,7 @@ const QuestionCard = ({ question }: Props) => {
           <Metric
             alt="comments"
             src={"/assets/icons/message.svg"}
-            label={"Comments"}
+            label={" Comments"}
             size={15}
             count={question.answers.length}
           />
