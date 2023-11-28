@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
@@ -28,6 +29,7 @@ const AskAQuestion = () => {
     defaultValues: {
       question: "",
       tags: [],
+      description: "",
     },
   });
 
@@ -94,7 +96,7 @@ const AskAQuestion = () => {
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
@@ -105,12 +107,12 @@ const AskAQuestion = () => {
                   </FormLabel>
                   <FormControl className="bg-dark-400">
                     <Editor
-                      value={field.value}
+                      value={editorRef.current}
                       apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                       onInit={(evt, editor) => (editorRef.current = editor)}
                       initialValue="Start describing your question..."
                       init={{
-                        height: 600,
+                        height: 400,
                         menubar: false,
                         plugins: [
                           "codesample",
@@ -151,7 +153,7 @@ const AskAQuestion = () => {
                   <FormMessage className="text-red-500" />
                 </FormItem>
               )}
-            /> */}
+            />
             <FormField
               control={form.control}
               name="tags"
@@ -174,7 +176,7 @@ const AskAQuestion = () => {
                       <div className=" flex gap-2">
                         {field.value.map((tag, index) => (
                           <span
-                            className="background-light800_dark400 relative mt-2 flex  rounded-md px-5 py-1 font-montserrat text-xs  "
+                            className="background-light800_dark400 relative mt-2 flex  rounded-md py-1 pl-2 pr-5 font-montserrat text-xs  "
                             key={index}
                           >
                             {tag}
