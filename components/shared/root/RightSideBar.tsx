@@ -50,7 +50,7 @@ const RightSideBar = () => {
       <div className="mt-32 px-3 py-4">
         <h1 className="h3-bold  font-spaceGrotesk">Top Questions</h1>
 
-        <div className="flex flex-col gap-5 py-5 font-montserrat text-sm">
+        <div className="flex flex-col gap-5 py-5  font-montserrat text-sm">
           {topQuestionsData.map(({ que, id }) => (
             <Link
               href={que}

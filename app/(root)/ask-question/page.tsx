@@ -1,12 +1,12 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import * as z from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { questionSchema } from "@/lib/validators";
-import { Button } from "@/components/ui/button";
+
 import {
   Form,
   FormControl,
@@ -17,10 +17,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import CTAButton from "@/components/shared/root/CTAButton";
+import Image from "next/image";
 
 const AskAQuestion = () => {
   const editorRef = useRef(null);
-
+  const [tag, setTag] = useState("");
   const form = useForm<z.infer<typeof questionSchema>>({
     resolver: zodResolver(questionSchema),
     defaultValues: {
@@ -34,6 +36,32 @@ const AskAQuestion = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>, field) {
+    if ((e.key === "Enter" || e.key === ",") && field.name === "tags") {
+      e.preventDefault();
+      if (field.value.length === 5) {
+        form.setError("tags", { message: "Max tags reached" });
+      } else if (tag.length > 10 || tag.length < 3) {
+        form.setError("tags", {
+          message: "Tag length must be between 3 and 10",
+        });
+      } else {
+        field.value.push(tag);
+        form.clearErrors("tags");
+        setTag("");
+      }
+    }
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setTag(e.target.value);
+  }
+
+  function handleRemoveTag(tag: String, field) {
+    const newTags = field.value.filter((t: string) => t !== tag);
+    form.setValue("tags", newTags);
   }
 
   return (
@@ -59,14 +87,14 @@ const AskAQuestion = () => {
                     />
                   </FormControl>
                   <FormDescription className="paragraph-regular text-light-500">
-                    Be specific and imagine you&epos;re asking a question to
+                    Be specific and imagine you&apos;re asking a question to
                     another person.
                   </FormDescription>
                   <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
@@ -77,11 +105,12 @@ const AskAQuestion = () => {
                   </FormLabel>
                   <FormControl className="bg-dark-400">
                     <Editor
+                      value={field.value}
                       apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                       onInit={(evt, editor) => (editorRef.current = editor)}
                       initialValue="Start describing your question..."
                       init={{
-                        height: 500,
+                        height: 600,
                         menubar: false,
                         plugins: [
                           "codesample",
@@ -111,8 +140,7 @@ const AskAQuestion = () => {
                           "alignleft aligncenter " +
                           "alignright alignjustify | bullist numlist outdent indent | " +
                           "removeformat | help",
-                        content_style:
-                          "body { font-family:Inter,Arial,sans-serif; font-size:14px }",
+                        content_style: `body { font-family:Inter,Arial,sans-serif; font-size:16px; }`,
                       }}
                     />
                   </FormControl>
@@ -123,7 +151,7 @@ const AskAQuestion = () => {
                   <FormMessage className="text-red-500" />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="tags"
@@ -133,11 +161,35 @@ const AskAQuestion = () => {
                     Tags <sup className="text-primary-500">*</sup>
                   </FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter tags..."
-                      className="background-light800_dark400 border-none font-spaceGrotesk ring-0 focus:ring-0 focus:ring-offset-0 "
-                      {...field}
-                    />
+                    <>
+                      <Input
+                        placeholder="Enter tags..."
+                        className="background-light800_dark400 border-none font-spaceGrotesk ring-0 focus:ring-0 focus:ring-offset-0 "
+                        onChange={(e) => handleChange(e)}
+                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+                          handleKeyDown(e, field)
+                        }
+                        value={tag}
+                      />
+                      <div className=" flex gap-2">
+                        {field.value.map((tag, index) => (
+                          <span
+                            className="background-light800_dark400 relative mt-2 flex  rounded-md px-5 py-1 font-montserrat text-xs  "
+                            key={index}
+                          >
+                            {tag}
+                            <Image
+                              onClick={() => handleRemoveTag(tag, field)}
+                              src={"/assets/icons/close.svg"}
+                              width={10}
+                              height={10}
+                              alt="clear tag"
+                              className="absolute right-1 top-1 cursor-pointer  dark:invert"
+                            />
+                          </span>
+                        ))}
+                      </div>
+                    </>
                   </FormControl>
                   <FormDescription className="paragraph-regular text-light-500">
                     Add up to 5 tags to describe what your question is about.
@@ -147,7 +199,13 @@ const AskAQuestion = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <div className="flex w-full justify-end ">
+              <CTAButton
+                label="Submit"
+                type="submit"
+                classList="py px-10 flex"
+              />
+            </div>
           </form>
         </Form>
       </div>
