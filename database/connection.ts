@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const connectDB = () => {
+export const connectDB = () => {
   const URL = process.env.DB_URL;
   let isConnected: boolean = false;
   let count = 0;
@@ -18,5 +18,3 @@ const connectDB = () => {
     })
     .catch((e) => console.error("Error while connecting to DB", e));
 };
-
-export default connectDB;
