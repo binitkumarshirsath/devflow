@@ -7,7 +7,7 @@ const connectDB = () => {
   if (!URL) throw new Error("DB URL missing");
   if (isConnected) {
     count = count + 1;
-    console.log("DB is already connecte || connectionTries:", count);
+    console.log("DB is already connected || connectionTries:", count);
     return;
   }
   mongoose
@@ -16,7 +16,7 @@ const connectDB = () => {
       isConnected = true;
       console.log("DB connection successful");
     })
-    .catch(() => console.error("Error while connecting to DB"));
+    .catch((e) => console.error("Error while connecting to DB", e));
 };
 
-module.exports = connectDB;
+export default connectDB;
