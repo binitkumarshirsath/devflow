@@ -45,7 +45,7 @@ const AskAQuestion = () => {
       e.preventDefault();
       if (field.value.length === 5) {
         form.setError("tags", { message: "Max tags reached" });
-      } else if (tag.length > 10 || tag.length < 3) {
+      } else if (tag.length > 20 || tag.length < 3) {
         form.setError("tags", {
           message: "Tag length must be between 3 and 10",
         });
@@ -76,7 +76,7 @@ const AskAQuestion = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="question"
+              name="title"
               render={({ field }) => (
                 <FormItem className="mt-5">
                   <FormLabel>
@@ -98,7 +98,7 @@ const AskAQuestion = () => {
             />
             <FormField
               control={form.control}
-              name="description"
+              name="content"
               render={({ field }) => (
                 <FormItem className="mt-5">
                   <FormLabel>
@@ -107,7 +107,9 @@ const AskAQuestion = () => {
                   </FormLabel>
                   <FormControl className="bg-dark-400">
                     <Editor
-                      value={editorRef.current}
+                      onEditorChange={field.onChange}
+                      onBlur={field.onBlur}
+                      value={field.value}
                       apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                       onInit={(evt, editor) => (editorRef.current = editor)}
                       initialValue="Start describing your question..."
