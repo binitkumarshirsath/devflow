@@ -13,6 +13,7 @@ export const createUser = async (data: CreateUserParams) => {
     return user;
   } catch (error) {
     console.error("Error while creating user", error);
+    throw error;
   }
 };
 
@@ -24,6 +25,7 @@ export const getUserById = async (userId: string) => {
     return user;
   } catch (err) {
     console.log("Something went wrong while fetching user", err);
+    throw err;
   }
 };
 
@@ -38,6 +40,7 @@ export const updateUserById = async (data: UpdateUserParams) => {
     return updatedUser;
   } catch (error) {
     console.error("Error while updating user", error);
+    throw error;
   }
 };
 
@@ -47,5 +50,6 @@ export const deleteUserById = async (data: DeleteUserParams) => {
     return user;
   } catch (err) {
     console.error("User deletion failed.", err);
+    throw err;
   }
 };
