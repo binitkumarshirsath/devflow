@@ -17,12 +17,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Editor } from "@tinymce/tinymce-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
+import { createQuestion } from "@/lib/actions/question.action";
+import { useRouter } from "next/navigation";
 
 interface Props {
   authorId: string;
 }
 
 const AskQuestion = ({ authorId }: Props) => {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
   const editorRef = useRef(null);
   const [tag, setTag] = useState("");
   const form = useForm<z.infer<typeof questionSchema>>({
@@ -34,14 +39,24 @@ const AskQuestion = ({ authorId }: Props) => {
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof questionSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    setLoading(true);
+    const data = {
+      ...values,
+      authorId,
+    };
+    createQuestion(data)
+      .then(() => {
+        setLoading(false);
+        router.push("/");
+      })
+      .catch((e) => console.log("Error while creating question", e))
+      .finally(() => setLoading(false));
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>, field) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>, field: any) {
     if ((e.key === "Enter" || e.key === ",") && field.name === "tags") {
       e.preventDefault();
       if (field.value.length === 5) {
@@ -62,7 +77,7 @@ const AskQuestion = ({ authorId }: Props) => {
     setTag(e.target.value);
   }
 
-  function handleRemoveTag(tag: String, field) {
+  function handleRemoveTag(tag: String, field: any) {
     const newTags = field.value.filter((t: string) => t !== tag);
     form.setValue("tags", newTags);
   }
@@ -106,6 +121,7 @@ const AskQuestion = ({ authorId }: Props) => {
                   onBlur={field.onBlur}
                   value={field.value}
                   apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+                  // @ts-ignore
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   initialValue="Start describing your question..."
                   init={{
@@ -199,7 +215,11 @@ const AskQuestion = ({ authorId }: Props) => {
           )}
         />
         <div className="flex w-full justify-end ">
-          <CTAButton label="Submit" type="submit" classList="py px-10 flex" />
+          <CTAButton
+            label={`${loading ? "Loading...." : "Submit"}`}
+            type="submit"
+            classList="py px-10 flex"
+          />
         </div>
       </form>
     </Form>

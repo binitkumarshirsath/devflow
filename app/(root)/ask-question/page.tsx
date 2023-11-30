@@ -1,4 +1,4 @@
-import { useAuth } from "@clerk/nextjs";
+// import { useAuth } from "@clerk/nextjs";
 import AskQuestion from "./AskQuestion";
 import { redirect } from "next/navigation";
 import { getUserById } from "@/lib/actions/user.action";

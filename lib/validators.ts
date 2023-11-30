@@ -9,7 +9,7 @@ export const questionSchema = z.object({
     .min(10, {
       message: "Please enter a question with at least 10 characters.",
     })
-    .max(50),
+    .max(100),
 
   // Ensure the description is between 100 and 1000 characters
   content: z
