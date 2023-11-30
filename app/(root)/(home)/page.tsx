@@ -2,9 +2,11 @@ import CTAButton from "@/components/shared/root/CTAButton";
 import Filters from "@/components/shared/root/Filters";
 import MobileFilter from "@/components/shared/root/MobileFilter";
 import NoResults from "@/components/shared/root/NoResults";
+
 import Questions from "@/components/shared/root/Questions";
 import SearchBar from "@/components/shared/root/SearchBar";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 
 export interface QuestionProps {
   id: number;
@@ -18,64 +20,22 @@ export interface QuestionProps {
     name: string;
   };
   createdAt: Date;
-  votes: number;
+  upvotes: {
+    id: string;
+    userID: string;
+  }[];
+  downvotes: {
+    id: string;
+    userID: string;
+  }[];
   views: number;
   answers: [];
 }
 
-const questions: QuestionProps[] = [
-  {
-    id: 1,
-    title: "How to use TypeScript with React?",
-    tags: [
-      { id: 101, name: "TypeScript" },
-      { id: 102, name: "React" },
-    ],
-    author: {
-      id: 1,
-      name: "John Doe",
-    },
-    createdAt: new Date("2023-01-01T12:00:00Z"),
-    votes: 15,
-    views: 200,
-    answers: [],
-  },
-  {
-    id: 2,
-    title: "Best practices for REST API design?",
-    tags: [
-      { id: 103, name: "API Design" },
-      { id: 104, name: "Best Practices" },
-    ],
-    author: {
-      id: 2,
-      name: "Jane Smith",
-    },
-    createdAt: new Date("2023-02-05T14:30:00Z"),
-    votes: 23,
-    views: 150,
-    answers: [],
-  },
-  {
-    id: 3,
-    title: "How to optimize performance in Angular apps?",
-    tags: [
-      { id: 105, name: "Angular" },
-      { id: 106, name: "Performance" },
-    ],
-    author: {
-      id: 3,
-      name: "Alex Johnson",
-    },
-    createdAt: new Date("2023-11-27T06:32:00Z"),
-    votes: 30,
-    views: 300,
-    answers: [],
-  },
-  // Add more questions as needed
-];
+export default async function Home() {
+  const result = await getQuestions({});
+  const questions = result?.questions;
 
-export default function Home() {
   return (
     <section>
       <div className="text-dark100_light900 flex flex-col gap-2 ">

@@ -2,20 +2,16 @@
 import { connectDB } from "@/database/connection";
 import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
-
-interface Props {
-  title: string;
-  content: string;
-  authorId: string;
-  tags: string[];
-}
+import { createQuestionProps, getQuestionsProps } from "./types/shared.types";
+import { revalidatePath } from "next/cache";
 
 export const createQuestion = async ({
   authorId,
   content,
   tags,
   title,
-}: Props) => {
+  path,
+}: createQuestionProps) => {
   connectDB();
 
   const question = await Question.create({
@@ -59,4 +55,18 @@ export const createQuestion = async ({
       tags: { $each: tagDocuments },
     },
   });
+
+  revalidatePath(path);
+};
+
+export const getQuestions = async (props: getQuestionsProps) => {
+  try {
+    connectDB();
+    const questions = await Question.find({})
+      .populate(["tags"])
+      .sort({ createdAt: -1 });
+    return { questions };
+  } catch (error) {
+    console.error("Error while fetching questions", error);
+  }
 };

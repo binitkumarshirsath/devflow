@@ -26,6 +26,7 @@ interface Props {
 
 const AskQuestion = ({ authorId }: Props) => {
   const [loading, setLoading] = useState(false);
+  const path = "/";
   const router = useRouter();
 
   const editorRef = useRef(null);
@@ -46,6 +47,7 @@ const AskQuestion = ({ authorId }: Props) => {
     const data = {
       ...values,
       authorId,
+      path,
     };
     createQuestion(data)
       .then(() => {

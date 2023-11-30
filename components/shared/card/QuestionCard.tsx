@@ -46,7 +46,7 @@ const QuestionCard = ({ question }: Props) => {
             src={"/assets/icons/like.svg"}
             createdAt={question.createdAt}
             label={" Votes"}
-            count={question.votes}
+            count={question.upvotes.length}
             size={15}
           />
           <Metric

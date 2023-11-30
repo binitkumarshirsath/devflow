@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema, models } from "mongoose";
 
-interface IQuestion extends Document {
+export interface IQuestion extends Document {
   title: string;
   content: string;
   author: Schema.Types.ObjectId;
