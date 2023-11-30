@@ -9,17 +9,17 @@ import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
 
 export interface QuestionProps {
-  id: number;
+  _id: string; // Change to string to accommodate ObjectId
   title: string;
   tags: {
-    id: number;
+    id: string; // Change to string to accommodate ObjectId
     name: string;
   }[];
   author: {
-    id: number;
+    id: string; // Change to string to accommodate ObjectId
     name: string;
   };
-  createdAt: Date;
+  createdAt: string; // Change to string, then parse it into Date in your component
   upvotes: {
     id: string;
     userID: string;
@@ -29,13 +29,13 @@ export interface QuestionProps {
     userID: string;
   }[];
   views: number;
-  answers: [];
+  answers: any[]; // Change to the actual type for answers if available
 }
 
 export default async function Home() {
   const result = await getQuestions({});
-  const questions = result?.questions;
-
+  const questions: QuestionProps[] = (result?.questions ||
+    []) as QuestionProps[];
   return (
     <section>
       <div className="text-dark100_light900 flex flex-col gap-2 ">

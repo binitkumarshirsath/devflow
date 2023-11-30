@@ -65,6 +65,12 @@ export const getQuestions = async (props: getQuestionsProps) => {
     const questions = await Question.find({})
       .populate(["tags"])
       .sort({ createdAt: -1 });
+
+    if (!questions) {
+      console.error("No questions found");
+      return { questions: [] };
+    }
+
     return { questions };
   } catch (error) {
     console.error("Error while fetching questions", error);
