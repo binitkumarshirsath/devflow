@@ -9,6 +9,7 @@ import {
 
 export const createUser = async (data: CreateUserParams) => {
   try {
+    connectDB();
     const user = await User.create(data);
     return user;
   } catch (error) {
@@ -31,6 +32,7 @@ export const getUserById = async (userId: string) => {
 
 export const updateUserById = async (data: UpdateUserParams) => {
   try {
+    connectDB();
     const updatedUser = await User.findByIdAndUpdate(
       { clerkId: data.clerkId },
       data.updateData,
@@ -46,6 +48,7 @@ export const updateUserById = async (data: UpdateUserParams) => {
 
 export const deleteUserById = async (data: DeleteUserParams) => {
   try {
+    connectDB();
     const user = await User.findOneAndDelete({ clerkId: data.clerkId });
     return user;
   } catch (err) {
