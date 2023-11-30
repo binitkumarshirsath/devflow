@@ -14,7 +14,7 @@ interface Props {
   alt: string;
   size: number;
   label: string;
-  createdAt?: Date;
+  createdAt?: string;
   href?: string;
   count?: number;
 }
