@@ -33,7 +33,7 @@ export const getUserById = async (userId: string) => {
 export const updateUserById = async (data: UpdateUserParams) => {
   try {
     connectDB();
-    const updatedUser = await User.findByIdAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { clerkId: data.clerkId },
       data.updateData,
       { new: true }

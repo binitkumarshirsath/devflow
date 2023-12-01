@@ -59,19 +59,13 @@ export async function POST(req: Request) {
   console.log("EVENTTYPE: ", eventType);
 
   if (eventType === "user.created") {
-    const {
-      first_name,
-      id,
-      last_name,
-      primary_email_address_id,
-      username,
-      image_url,
-    } = evt.data;
+    const { first_name, id, last_name, email_addresses, username, image_url } =
+      evt.data;
 
     const data = {
       clerkId: id,
       name: `${first_name} ${last_name || ""}`,
-      email: primary_email_address_id,
+      email: email_addresses[0].email_address,
       picture: image_url,
       username: username || "",
     };
@@ -85,18 +79,12 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.updated") {
-    const {
-      first_name,
-      id,
-      last_name,
-      primary_email_address_id,
-      username,
-      image_url,
-    } = evt.data;
+    const { first_name, id, last_name, email_addresses, username, image_url } =
+      evt.data;
 
     const updateData = {
       name: `${first_name} ${last_name || ""}`,
-      email: primary_email_address_id,
+      email: email_addresses[0].email_address,
       picture: image_url,
       username: username || "",
     };
