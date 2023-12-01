@@ -1,3 +1,4 @@
+import User from "./user.model";
 import mongoose, { Document, Schema, models } from "mongoose";
 
 export interface IQuestion extends Document {
@@ -57,7 +58,7 @@ const questionSchema = new mongoose.Schema<IQuestion>(
     ],
     author: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: User.modelName,
     },
   },
 

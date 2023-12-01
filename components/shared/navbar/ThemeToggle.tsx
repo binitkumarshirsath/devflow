@@ -18,10 +18,10 @@ export function ModeToggle() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="mr-5 flex w-full">
+      <DropdownMenuTrigger asChild className="flex w-full">
         <Button
           size="icon"
-          className="w-full border-none outline-none ring-0 focus:hidden focus:shadow-none focus:outline-none focus:ring-0 focus:ring-offset-0"
+          className="w-full min-w-[30px] border-none outline-none ring-0 focus:hidden focus:shadow-none focus:outline-none focus:ring-0 focus:ring-offset-0"
         >
           <Image
             src={"/assets/icons/sun.svg"}

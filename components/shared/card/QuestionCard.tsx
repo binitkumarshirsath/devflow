@@ -1,8 +1,8 @@
 import { QuestionProps } from "@/app/(root)/(home)/page";
 import { formatDate } from "@/lib/utils";
-import Link from "next/link";
 import React from "react";
 import Metric from "./Metric";
+import RenderTags from "../root/RenderTags";
 
 interface Props {
   question: QuestionProps;
@@ -19,17 +19,7 @@ const QuestionCard = ({ question }: Props) => {
         {question.title}
       </div>
       {/* card tags */}
-      <div className="flex gap-x-2 max-xs:max-w-xs">
-        {question.tags.map((tag) => (
-          <Link
-            key={tag.id}
-            className="tab rounded-lg px-3 py-1 text-sm "
-            href={tag.name}
-          >
-            {tag.name}
-          </Link>
-        ))}
-      </div>
+      <RenderTags item={question.tags} />
       {/* Info row */}
       <div className="mt-3 flex items-center justify-between text-sm">
         <Metric

@@ -21,17 +21,21 @@ function MobileFilter({ filters, visible }: Props) {
       <SelectTrigger
         className={`placeholder 
       background-light800_dark300
-       h-12 w-full rounded-lg border-none px-4 font-spaceGrotesk  font-medium focus:outline-none  focus:ring-0 focus:ring-offset-0 md:pl-10 ${
+       h-12 w-full gap-2 rounded-lg border-none px-4 font-spaceGrotesk  font-medium focus:outline-none  focus:ring-0 focus:ring-offset-0  ${
          visible ? "" : "lg:hidden"
        } `}
       >
         <SelectValue placeholder="Select a Filter" />
       </SelectTrigger>
       <SelectContent className="background-light850_dark100 border-none  outline-none focus:no-underline">
-        <SelectGroup>
+        <SelectGroup className="background-light850_dark100">
           {filters.map((filter, index) => {
             return (
-              <SelectItem key={index} value={filter.value}>
+              <SelectItem
+                className="background-light850_dark100"
+                key={index}
+                value={filter.value}
+              >
                 {filter.name}
               </SelectItem>
             );

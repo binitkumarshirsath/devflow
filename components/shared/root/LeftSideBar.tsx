@@ -9,10 +9,10 @@ const LeftSideBar = () => {
   const pathname = usePathname();
   return (
     <aside
-      className="background-light900_dark200 custom-scrollbar sticky inset-y-0 flex h-screen min-w-[200px]   flex-col overflow-y-auto border-none
+      className="background-light900_dark200 custom-scrollbar sticky inset-y-0 flex h-screen min-w-[80px]     flex-col overflow-y-auto border-none
       pt-20 max-md:hidden   lg:w-[266px]"
     >
-      <div className="mt-16 flex h-fit flex-col gap-2 px-4 py-2">
+      <div className="mt-12 flex h-fit flex-col gap-2 px-4 py-2">
         {sidebarLinks.map((link, index) => {
           const isActive = link.route === pathname;
 
@@ -21,7 +21,7 @@ const LeftSideBar = () => {
               href={link.route}
               key={index}
               className={`flex h-full w-full
-                gap-4 rounded-lg font-montserrat text-lg max-lg:p-4 lg:p-5  ${
+                gap-4 rounded-lg font-montserrat text-base max-lg:p-4 lg:p-4  ${
                   isActive ? "primary-gradient font-bold" : ""
                 }`}
             >
@@ -32,7 +32,7 @@ const LeftSideBar = () => {
                 alt={link.label}
                 className={`${isActive ? "" : "invert-colors"}`}
               />
-              <span className="max-sm:hidden max-sm:text-xs">{link.label}</span>
+              <span className="max-lg:hidden max-sm:text-xs">{link.label}</span>
             </Link>
           );
         })}

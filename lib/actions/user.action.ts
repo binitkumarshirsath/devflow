@@ -4,6 +4,7 @@ import User from "@/database/models/user.model";
 import {
   CreateUserParams,
   DeleteUserParams,
+  GetAllUsersParams,
   UpdateUserParams,
 } from "./types/shared.types";
 
@@ -53,6 +54,17 @@ export const deleteUserById = async (data: DeleteUserParams) => {
     return user;
   } catch (err) {
     console.error("User deletion failed.", err);
+    throw err;
+  }
+};
+
+export const getAllUsers = async (data: GetAllUsersParams) => {
+  try {
+    connectDB();
+    const users = await User.find({}).sort({ createdAt: -1 });
+    return users;
+  } catch (err) {
+    console.error("Error while fetching users", err);
     throw err;
   }
 };
