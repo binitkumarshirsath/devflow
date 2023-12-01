@@ -27,12 +27,12 @@ function MobileFilter({ filters, visible }: Props) {
       >
         <SelectValue placeholder="Select a Filter" />
       </SelectTrigger>
-      <SelectContent className="background-light850_dark100 border-none  outline-none focus:no-underline">
-        <SelectGroup className="background-light850_dark100">
+      <SelectContent className="background-light800_dark300 border-none   outline-none focus:no-underline">
+        <SelectGroup className="background-light800_dark300 dark:hover:bg-dark-100 ">
           {filters.map((filter, index) => {
             return (
               <SelectItem
-                className="background-light850_dark100"
+                className="background-light800_dark300 cursor-pointer dark:hover:bg-dark-100"
                 key={index}
                 value={filter.value}
               >

@@ -16,7 +16,7 @@ const RenderTags = ({ item }: Props) => {
         <Link
           key={tag.id}
           className="tab rounded-lg px-3 py-1 text-sm "
-          href={"/tags/" + tag.name}
+          href={"/tags/" + tag.id}
         >
           {tag.name}
         </Link>

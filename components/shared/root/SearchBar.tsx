@@ -12,7 +12,7 @@ const SearchBar = ({ placeholder, name, classList }: Props) => {
     <div className=" relative  flex h-full w-full items-center md:w-[600px]  ">
       <input
         className={`placeholder 
-        background-light900_dark300
+        background-light800_dark400 
          h-12 w-full rounded-lg border-none pl-12  pr-4  font-spaceGrotesk font-medium focus:outline-none focus:ring-0    focus:ring-offset-0 ${classList} `}
         type="text"
         name={name}
