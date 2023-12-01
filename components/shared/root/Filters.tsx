@@ -9,7 +9,7 @@ interface Props {
 const Filters = ({ filters }: Props) => {
   const active = "newest";
   return (
-    <div className="mt-6 flex gap-4 max-md:hidden">
+    <div className="mt-6 flex gap-4 max-lg:hidden">
       {filters.map((filter, index) => {
         const isActive = filter.value === active;
         return (

@@ -13,7 +13,7 @@ const SearchBar = ({ placeholder, name, classList }: Props) => {
       <input
         className={`placeholder 
         background-light900_dark300
-         h-12 w-full rounded-lg border-none pl-12  pr-4  font-spaceGrotesk font-medium focus:outline-none focus:ring-0   focus:ring-offset-0 ${classList} `}
+         h-12 w-full rounded-lg border-none pl-12  pr-4  font-spaceGrotesk font-medium focus:outline-none focus:ring-0    focus:ring-offset-0 ${classList} `}
         type="text"
         name={name}
         placeholder={placeholder}

@@ -19,7 +19,7 @@ const QuestionCard = ({ question }: Props) => {
         {question.title}
       </div>
       {/* card tags */}
-      <div className="flex gap-4 ">
+      <div className="flex gap-x-2 max-xs:max-w-xs">
         {question.tags.map((tag) => (
           <Link
             key={tag.id}

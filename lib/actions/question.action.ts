@@ -63,7 +63,7 @@ export const getQuestions = async (props: getQuestionsProps) => {
   try {
     connectDB();
     const questions = await Question.find({})
-      .populate(["tags"])
+      .populate(["tags", "author"])
       .sort({ createdAt: -1 });
 
     if (!questions) {

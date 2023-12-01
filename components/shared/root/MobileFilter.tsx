@@ -12,19 +12,22 @@ import { Filter } from "@/types";
 
 interface Props {
   filters: Filter[];
+  visible?: boolean;
 }
 
-function MobileFilter({ filters }: Props) {
+function MobileFilter({ filters, visible }: Props) {
   return (
     <Select>
       <SelectTrigger
-        className="placeholder 
-      background-light900_dark300
-       h-12 w-full rounded-lg border-none pl-10  pr-4 font-spaceGrotesk  font-medium focus:outline-none focus:ring-0   focus:ring-offset-0 md:hidden"
+        className={`placeholder 
+      background-light800_dark300
+       h-12 w-full rounded-lg border-none px-4 font-spaceGrotesk  font-medium focus:outline-none  focus:ring-0 focus:ring-offset-0 md:pl-10 ${
+         visible ? "" : "lg:hidden"
+       } `}
       >
         <SelectValue placeholder="Select a Filter" />
       </SelectTrigger>
-      <SelectContent className="border-none outline-none focus:no-underline">
+      <SelectContent className="background-light850_dark100 border-none  outline-none focus:no-underline">
         <SelectGroup>
           {filters.map((filter, index) => {
             return (
