@@ -7,24 +7,37 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import RichTextEditor from "./RichTextEditor";
 import CTAButton from "./CTAButton";
+import { postAnswer } from "@/lib/actions/answer.action";
 
 /*
 https://github.com/shadcn-ui/ui/issues/800
 */
 
-const UserAnswerBox = () => {
+interface Props {
+  user: string;
+  question: string;
+}
+
+const UserAnswerBox = ({ user, question }: Props) => {
+  console.log(user, question);
+
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof answerSchema>>({
     resolver: zodResolver(answerSchema),
     defaultValues: {
-      answer: "",
+      content: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof answerSchema>) {
+  async function onSubmit({ content }: z.infer<typeof answerSchema>) {
     setLoading(true);
-    console.log(values);
+    await postAnswer({
+      author: user,
+      content,
+      path: `/question/${question}`,
+      question,
+    });
     setLoading(false);
   }
 
@@ -33,7 +46,7 @@ const UserAnswerBox = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="answer"
+          name="content"
           render={({ field }) => (
             <FormItem>
               <FormControl>

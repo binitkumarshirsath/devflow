@@ -1,4 +1,4 @@
-import { Schema, models, model, Document } from "mongoose";
+import mongoose, { Schema, model, Document } from "mongoose";
 
 interface IAnswer extends Document {
   content: string;
@@ -38,6 +38,6 @@ const answerSchema = new Schema<IAnswer>(
   { timestamps: true }
 );
 
-const Answer = models.Answer || model("Answer", answerSchema);
+const Answer = mongoose.models.Answer || model<IAnswer>("Answer", answerSchema);
 
 export default Answer;

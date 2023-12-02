@@ -7,13 +7,23 @@ import Image from "next/image";
 import React from "react";
 import RenderTags from "@/components/shared/root/RenderTags";
 import UserAnswerBox from "@/components/shared/root/UserAnswerBox";
+import { getUserById } from "@/lib/actions/user.action";
+import { auth } from "@clerk/nextjs";
+import AnswerCard from "@/components/shared/card/AnswerCard";
+import { getAnswers } from "@/lib/actions/answer.action";
+import { AnswerProps } from "@/types";
 
 interface Props {
   params: { questionId: string };
 }
 
 const QuestionDetails = async ({ params: { questionId } }: Props) => {
+  const { userId } = auth();
+  const user = await getUserById(userId!);
   const question = await getQuestion({ questionId });
+  const answers: AnswerProps[] = (await getAnswers({
+    questionId,
+  })) as AnswerProps[];
 
   return (
     <div className="flex w-full flex-col ">
@@ -74,7 +84,17 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
           </button>
         </div>
 
-        <UserAnswerBox />
+        <UserAnswerBox
+          user={JSON.stringify(user._id)}
+          question={JSON.stringify(question._id)}
+        />
+
+        {/* Answers of question */}
+        <div className="mt-4 flex h-full w-full flex-col">
+          {answers.map((answer, index) => (
+            <AnswerCard data={answer} key={index} />
+          ))}
+        </div>
       </div>
     </div>
   );

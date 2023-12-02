@@ -35,5 +35,5 @@ export const questionSchema = z.object({
 });
 
 export const answerSchema = z.object({
-  answer: z.string().min(10),
+  content: z.string().min(10),
 });

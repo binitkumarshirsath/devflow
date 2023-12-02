@@ -43,3 +43,12 @@ export interface BadgeCounts {
   BRONZE: number;
 }
 export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA;
+
+export interface AnswerProps {
+  content: string;
+  createdAt: Date;
+  author: {
+    name: string;
+    picture: string;
+  };
+}
