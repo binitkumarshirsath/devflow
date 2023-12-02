@@ -13,7 +13,6 @@ interface Props {
 
 const QuestionDetails = async ({ params: { questionId } }: Props) => {
   const question = await getQuestion({ questionId });
-  console.log(question);
 
   return (
     <div className="flex w-full flex-col ">
@@ -59,6 +58,7 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
           <ParseHTML data={question.content} />
           <RenderTags item={question.tags} />
         </div>
+        <div className="mt-4"></div>
       </div>
     </div>
   );

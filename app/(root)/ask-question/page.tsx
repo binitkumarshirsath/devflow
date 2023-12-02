@@ -1,11 +1,12 @@
-// import { useAuth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 import AskQuestion from "./AskQuestion";
 import { redirect } from "next/navigation";
 import { getUserById } from "@/lib/actions/user.action";
 
 const AskAQuestion = async () => {
-  // const { userId } = useAuth();
-  const userId = "65677f2e74e5cd4a946a59c6";
+  const { userId } = auth();
+  console.log(userId);
+
   if (!userId) redirect("/sign-in");
   const user = await getUserById(userId);
   const authorId = JSON.stringify(user._id);

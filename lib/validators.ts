@@ -18,8 +18,8 @@ export const questionSchema = z.object({
       message:
         "Please provide a more detailed description with at least 100 characters.",
     })
-    .max(2000, {
-      message: "Description exceeds the maximum limit of 2000 characters.",
+    .max(4000, {
+      message: "Description exceeds the maximum limit of 4000 characters.",
     }),
 
   // Ensure the tags are between 3 and 20 characters, and there should be at least 1 but no more than 5 tags
@@ -32,4 +32,8 @@ export const questionSchema = z.object({
     )
     .min(1, { message: "Please add at least one tag." })
     .max(5, { message: "You can add a maximum of 5 tags." }),
+});
+
+export const answerSchema = z.object({
+  answer: z.string().min(10),
 });

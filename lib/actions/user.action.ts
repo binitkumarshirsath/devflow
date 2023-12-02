@@ -22,7 +22,9 @@ export const createUser = async (data: CreateUserParams) => {
 export const getUserById = async (userId: string) => {
   try {
     connectDB();
-    const user = await User.findById(userId);
+    // const clerkId = JSON.parse(userId);
+
+    const user = await User.findOne({ clerkId: userId });
     if (!user) throw new Error("User not found");
     return user;
   } catch (err) {

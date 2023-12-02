@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import * as z from "zod";
 import CTAButton from "@/components/shared/root/CTAButton";
 import {
@@ -14,11 +14,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { questionSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Editor } from "@tinymce/tinymce-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { createQuestion } from "@/lib/actions/question.action";
 import { useRouter } from "next/navigation";
+
+import RichTextEditor from "@/components/shared/root/RichTextEditor";
 
 interface Props {
   authorId: string;
@@ -29,7 +30,6 @@ const AskQuestion = ({ authorId }: Props) => {
   const path = "/";
   const router = useRouter();
 
-  const editorRef = useRef(null);
   const [tag, setTag] = useState("");
   const form = useForm<z.infer<typeof questionSchema>>({
     resolver: zodResolver(questionSchema),
@@ -118,47 +118,10 @@ const AskQuestion = ({ authorId }: Props) => {
                 <sup className="text-primary-500">*</sup>
               </FormLabel>
               <FormControl className="bg-dark-400">
-                <Editor
-                  onEditorChange={field.onChange}
+                <RichTextEditor
                   onBlur={field.onBlur}
+                  onChange={field.onChange}
                   value={field.value}
-                  apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
-                  // @ts-ignore
-                  onInit={(evt, editor) => (editorRef.current = editor)}
-                  initialValue="Start describing your question..."
-                  init={{
-                    height: 400,
-                    menubar: false,
-                    plugins: [
-                      "codesample",
-                      "advlist",
-                      "autolink",
-                      "lists",
-                      "link",
-                      "image",
-                      "charmap",
-                      "preview",
-                      "anchor",
-                      "searchreplace",
-                      "visualblocks",
-                      "code",
-                      "fullscreen",
-                      "insertdatetime",
-                      "media",
-                      "table",
-                      "code",
-                      "help",
-                      "wordcount",
-                    ],
-                    toolbar:
-                      "undo redo | blocks | " +
-                      "bold italic forecolor " +
-                      " | codesample  | " +
-                      "alignleft aligncenter " +
-                      "alignright alignjustify | bullist numlist outdent indent | " +
-                      "removeformat | help",
-                    content_style: `body { font-family:Inter,Arial,sans-serif; font-size:16px; }`,
-                  }}
                 />
               </FormControl>
               <FormDescription className="paragraph-regular text-light-500">
