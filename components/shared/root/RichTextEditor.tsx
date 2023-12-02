@@ -6,9 +6,15 @@ interface RichTextEditorProps {
   value: string;
   onChange: (content: string) => void;
   onBlur: () => void;
+  initialValue: string;
 }
 
-const RichTextEditor = ({ onBlur, onChange, value }: RichTextEditorProps) => {
+const RichTextEditor = ({
+  onBlur,
+  onChange,
+  value,
+  initialValue,
+}: RichTextEditorProps) => {
   const editorRef = useRef(null);
 
   const { theme } = useTheme();
@@ -20,7 +26,7 @@ const RichTextEditor = ({ onBlur, onChange, value }: RichTextEditorProps) => {
       apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
       // @ts-ignore
       onInit={(evt, editor) => (editorRef.current = editor)}
-      initialValue="Start describing your question..."
+      initialValue={initialValue}
       init={{
         height: 400,
         menubar: false,

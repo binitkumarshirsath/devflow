@@ -120,6 +120,7 @@ const AskQuestion = ({ authorId }: Props) => {
               <FormControl className="bg-dark-400">
                 <RichTextEditor
                   onBlur={field.onBlur}
+                  initialValue="Start describing your question..."
                   onChange={field.onChange}
                   value={field.value}
                 />

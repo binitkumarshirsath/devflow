@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning={true}>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} ${montserrat.variable}`}
       >
