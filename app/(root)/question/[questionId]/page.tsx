@@ -6,7 +6,7 @@ import ParseHTML from "@/components/shared/root/ParseHTML";
 import Image from "next/image";
 import React from "react";
 import RenderTags from "@/components/shared/root/RenderTags";
-import Answer from "@/components/shared/root/Answer";
+import UserAnswerBox from "@/components/shared/root/UserAnswerBox";
 
 interface Props {
   params: { questionId: string };
@@ -74,7 +74,7 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
           </button>
         </div>
 
-        <Answer />
+        <UserAnswerBox />
       </div>
     </div>
   );

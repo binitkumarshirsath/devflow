@@ -12,7 +12,7 @@ import CTAButton from "./CTAButton";
 https://github.com/shadcn-ui/ui/issues/800
 */
 
-const Answer = () => {
+const UserAnswerBox = () => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof answerSchema>>({
@@ -59,4 +59,4 @@ const Answer = () => {
   );
 };
 
-export default Answer;
+export default UserAnswerBox;
