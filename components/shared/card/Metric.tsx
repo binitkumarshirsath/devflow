@@ -16,7 +16,7 @@ interface Props {
   label: string;
   createdAt?: string;
   href?: string;
-  count?: number;
+  count?: number | string;
 }
 
 const Metric = ({ alt, createdAt, label, size, src, href, count }: Props) => {
@@ -26,18 +26,19 @@ const Metric = ({ alt, createdAt, label, size, src, href, count }: Props) => {
         <Image alt={alt} src={src} width={size || 20} height={size} />
         <div className="flex gap-2">
           {label}
-          <span className="max-sm:hidden">{formatDate(createdAt!)}</span>
+          {createdAt && (
+            <span className="max-sm:hidden">{formatDate(createdAt)}</span>
+          )}
         </div>
       </Link>
     );
   }
 
   return (
-    <div className="flex gap-1 font-spaceGrotesk text-xs">
+    <div className="flex items-center gap-1 font-spaceGrotesk text-xs">
       <Image alt={alt} src={src} width={size || 20} height={size} />
       <div className="">
-        {count}
-        <span className="max-md:hidden">{label}</span>
+        {count} <span className="">{label}</span>
       </div>
     </div>
   );

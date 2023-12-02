@@ -2,7 +2,11 @@
 import { connectDB } from "@/database/connection";
 import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
-import { createQuestionProps, getQuestionsProps } from "./types/shared.types";
+import {
+  GetQuestionByIdParams,
+  createQuestionProps,
+  getQuestionsProps,
+} from "./types/shared.types";
 import { revalidatePath } from "next/cache";
 
 export const createQuestion = async ({
@@ -74,5 +78,22 @@ export const getQuestions = async (props: getQuestionsProps) => {
     return { questions };
   } catch (error) {
     console.error("Error while fetching questions", error);
+  }
+};
+
+export const getQuestion = async ({ questionId }: GetQuestionByIdParams) => {
+  try {
+    connectDB();
+    if (!questionId.match(/^[0-9a-fA-F]{24}$/)) {
+      throw new Error("Invalid object id");
+    }
+    // Yes, it's a valid ObjectId, proceed with `findById` call.
+    const question = await Question.findById({ _id: questionId })
+      .populate("author")
+      .populate("tags");
+    return question;
+  } catch (err) {
+    console.error("Error while fetching question with id", err);
+    throw err;
   }
 };

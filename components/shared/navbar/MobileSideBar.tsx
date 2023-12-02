@@ -20,10 +20,10 @@ const Sidebar = () => {
 
   return (
     <Sheet>
-      <SheetTrigger asChild className="pr-3 md:hidden">
+      <SheetTrigger asChild className="md:hidden">
         <Image
           className="invert-colors mx-2 cursor-pointer"
-          src="assets/icons/hamburger.svg"
+          src="/assets/icons/hamburger.svg"
           alt="hamburger menu"
           width={30}
           height={30}
