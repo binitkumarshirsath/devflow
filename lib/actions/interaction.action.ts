@@ -5,7 +5,6 @@ import { ViewQuestionParams } from "./types/shared.types";
 import Question from "@/database/models/question.model";
 import Interaction from "@/database/models/interaction.model";
 import { revalidatePath } from "next/cache";
-import path from "path";
 
 /*
     @For Binit
