@@ -1,4 +1,5 @@
 import { BADGE_CRITERIA } from "@/constants";
+import { ObjectId } from "mongoose";
 export interface SidebarLink {
   imgURL: string;
   route: string;
@@ -48,7 +49,11 @@ export interface AnswerProps {
   content: string;
   createdAt: Date;
   author: {
+    _id: string;
     name: string;
+    clerkId: string;
     picture: string;
   };
+  upvotes: [ObjectId];
+  downvotes: [ObjectId];
 }

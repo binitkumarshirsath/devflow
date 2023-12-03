@@ -17,13 +17,29 @@ interface Props {
   createdAt?: string;
   href?: string;
   count?: number | string;
+  styles?: string;
 }
 
-const Metric = ({ alt, createdAt, label, size, src, href, count }: Props) => {
+const Metric = ({
+  alt,
+  createdAt,
+  label,
+  size,
+  src,
+  href,
+  count,
+  styles,
+}: Props) => {
   if (href) {
     return (
       <Link href={href} className="flex gap-2">
-        <Image alt={alt} src={src} width={size || 20} height={size} />
+        <Image
+          alt={alt}
+          src={src}
+          width={size || 20}
+          height={size}
+          className={styles}
+        />
         <div className="flex gap-2">
           {label}
           {createdAt && (

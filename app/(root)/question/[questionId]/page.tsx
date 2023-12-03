@@ -12,6 +12,9 @@ import { auth } from "@clerk/nextjs";
 import AnswerCard from "@/components/shared/card/AnswerCard";
 import { getAnswers } from "@/lib/actions/answer.action";
 import { AnswerProps } from "@/types";
+import MobileFilter from "@/components/shared/root/MobileFilter";
+import { AnswerFilters } from "@/constants/filters";
+import Votes from "@/components/shared/root/Votes";
 
 interface Props {
   params: { questionId: string };
@@ -21,6 +24,7 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
   const { userId } = auth();
   const user = await getUserById(userId!);
   const question = await getQuestion({ questionId });
+
   const answers: AnswerProps[] = (await getAnswers({
     questionId,
   })) as AnswerProps[];
@@ -38,7 +42,18 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
           />
           <div>{question.author.name}</div>
         </div>
-        <div>Upvotes</div>
+        <div>
+          <Votes
+            userId={question.author.clerkId}
+            questionId={JSON.stringify(question._id)}
+            upvotes={question.upvotes.length}
+            downvotes={question.downvotes.length}
+            hasDownVoted={question.downvotes.includes(user._id)}
+            hasUpvoted={question.upvotes.includes(user._id)}
+            hasSaved={user.saved.includes(question._id)}
+            type="question"
+          />
+        </div>
       </div>
       <div className="mt-10 flex w-full flex-col">
         <div className="h3-semibold">{question.title}</div>
@@ -69,6 +84,14 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
           <ParseHTML data={question.content} />
           <RenderTags item={question.tags} />
         </div>
+        <div className="flex items-center justify-between font-montserrat  text-sm font-semibold md:mt-5">
+          <div className="primary-text-gradient font-montserrat">
+            {answers.length + " answers"}
+          </div>
+          <div>
+            <MobileFilter filters={AnswerFilters} visible={true} />
+          </div>
+        </div>
         <div className="flex items-center justify-between font-montserrat  text-sm md:mt-5">
           <div className="text-dark500_light700 font-montserrat">
             Write your answer here :
@@ -92,7 +115,12 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
         {/* Answers of question */}
         <div className="mt-4 flex h-full w-full flex-col">
           {answers.map((answer, index) => (
-            <AnswerCard data={answer} key={index} />
+            <AnswerCard
+              data={answer}
+              userId={user._id}
+              questionId={questionId}
+              key={index}
+            />
           ))}
         </div>
       </div>

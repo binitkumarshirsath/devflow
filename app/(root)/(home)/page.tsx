@@ -18,6 +18,7 @@ export interface QuestionProps {
   author: {
     id: string; // Change to string to accommodate ObjectId
     name: string;
+    picture: string;
   };
   createdAt: string; // Change to string, then parse it into Date in your component
   upvotes: {

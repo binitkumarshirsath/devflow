@@ -27,11 +27,12 @@ const QuestionCard = ({ question }: Props) => {
       {/* Info row */}
       <div className="mt-3 flex items-center justify-between text-sm">
         <Metric
-          src="/assets/icons/user.svg"
+          src={question.author.picture}
           alt="userpfp"
+          styles="bg-circle"
           createdAt={question.createdAt}
           label={question.author.name}
-          size={15}
+          size={20}
           href={`author/${question.author.id}`}
         />
         <div className="flex gap-4">

@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // dateUtils.js
 
-export function formatDate(date: Date) {
+export function formatDate(date: Date | string) {
   const now = moment();
   const createdDate = moment(date);
 
