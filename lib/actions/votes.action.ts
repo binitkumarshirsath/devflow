@@ -56,3 +56,48 @@ export const upvoteQuestion = async (params: QuestionVoteParams) => {
     throw err;
   }
 };
+
+export const downvoteQuestion = async (params: QuestionVoteParams) => {
+  try {
+    const { hasdownVoted, hasupVoted, questionId, path, userId } = params;
+    await connectDB();
+    console.log(typeof questionId, typeof userId);
+
+    let query = {};
+    if (hasdownVoted) {
+      query = {
+        $pull: {
+          downvotes: userId,
+        },
+      };
+    } else if (hasupVoted) {
+      query = {
+        $pull: {
+          upvotes: userId,
+        },
+        $addToSet: {
+          downvotes: userId,
+        },
+      };
+    } else {
+      query = {
+        $addToSet: {
+          downvotes: userId,
+        },
+      };
+    }
+
+    const question = await Question.findOneAndUpdate(
+      {
+        _id: questionId,
+      },
+      query,
+      { new: true }
+    );
+    revalidatePath(path);
+    return question;
+  } catch (err) {
+    console.error("Error while downvoting the question", err);
+    throw err;
+  }
+};

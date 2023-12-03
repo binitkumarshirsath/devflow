@@ -44,7 +44,7 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
         </div>
         <div>
           <Votes
-            userId={JSON.parse(JSON.stringify(user._id))}
+            userId={user._id}
             questionId={JSON.parse(JSON.stringify(question._id))}
             upvotes={question.upvotes.length}
             downvotes={question.downvotes.length}

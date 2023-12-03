@@ -1,6 +1,6 @@
 "use client";
 
-import { upvoteQuestion } from "@/lib/actions/votes.action";
+import { downvoteQuestion, upvoteQuestion } from "@/lib/actions/votes.action";
 import Image from "next/image";
 import React from "react";
 
@@ -30,6 +30,15 @@ const Votes = ({
 
     if (action === "upvote") {
       await upvoteQuestion({
+        hasdownVoted: hasDownVoted,
+        hasupVoted: hasUpvoted,
+        questionId: questionId!,
+        userId,
+        path,
+      });
+    }
+    if (action === "downvote") {
+      await downvoteQuestion({
         hasdownVoted: hasDownVoted,
         hasupVoted: hasUpvoted,
         questionId: questionId!,

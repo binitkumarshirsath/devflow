@@ -3,6 +3,7 @@ import Answer from "@/database/models/answer.model";
 import { CreateAnswerParams, GetAnswersParams } from "./types/shared.types";
 import { connectDB } from "@/database/connection";
 import { revalidatePath } from "next/cache";
+import Question from "@/database/models/question.model";
 
 export const postAnswer = async ({
   author,
@@ -18,7 +19,23 @@ export const postAnswer = async ({
       content,
       question: JSON.parse(question),
     });
+
     revalidatePath(path);
+
+    await Question.findByIdAndUpdate(
+      {
+        _id: JSON.parse(question),
+      },
+      {
+        $addToSet: {
+          answers: answer._id,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
     return answer;
   } catch (error) {
     console.error("Error while posting the answer", error);

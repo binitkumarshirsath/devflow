@@ -10,6 +10,8 @@ interface Props {
 }
 
 const QuestionCard = ({ question }: Props) => {
+  console.log(question.answers);
+
   return (
     <div className="card-wrapper flex flex-col gap-2 rounded-lg p-4 sm:p-5 md:p-7 ">
       {/* card title */}
