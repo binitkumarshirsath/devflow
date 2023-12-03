@@ -16,13 +16,12 @@ const Collections = async () => {
       </div>
       {questions && questions.length === 0 ? (
         <NoResults
-          title="No questions found!"
-          description=" Be the first to break the silence! 🚀 Ask a Question and kickstart the
-        discussion. our query could be the next big thing others learn from. Get
-        involved! 💡"
+          title="No saved questions found!"
+          description="Save your first question 💡 ,
+          Elevate your coding journey! Start saving your burning questions now on our devFlow  for expert advice and collaborative problem-solving."
           button={{
-            href: "/ask-question",
-            label: "Lets Go !",
+            href: "/",
+            label: "Lets Save !",
             classList: "px-5 py-2 mt-5",
           }}
         />

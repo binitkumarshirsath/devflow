@@ -1,5 +1,6 @@
 "use client";
 
+import { viewQuestion } from "@/lib/actions/interaction.action";
 import { saveQuestion } from "@/lib/actions/question.action";
 import {
   downvoteAnswer,
@@ -8,7 +9,8 @@ import {
   upvoteQuestion,
 } from "@/lib/actions/votes.action";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 interface Props {
   userId: string;
@@ -87,6 +89,14 @@ const Votes = ({
       userId,
     });
   };
+
+  const pathName = usePathname();
+  // for increating views of question
+  useEffect(() => {
+    if (type === "question" && questionId) {
+      viewQuestion({ questionId, userId, path: pathName });
+    }
+  }, [questionId, userId, type, pathName]);
 
   return (
     <div className="flex items-center gap-1">

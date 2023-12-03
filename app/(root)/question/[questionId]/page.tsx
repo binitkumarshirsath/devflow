@@ -92,7 +92,7 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
             <MobileFilter filters={AnswerFilters} visible={true} />
           </div>
         </div>
-        <div className="flex items-center justify-between font-montserrat  text-sm md:mt-5">
+        <div className="mt-4 flex items-center justify-between font-montserrat  text-sm md:mt-5">
           <div className="text-dark500_light700 font-montserrat">
             Write your answer here :
           </div>
