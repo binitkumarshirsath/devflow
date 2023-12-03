@@ -1,5 +1,6 @@
 "use client";
 
+import { saveQuestion } from "@/lib/actions/question.action";
 import {
   downvoteAnswer,
   downvoteQuestion,
@@ -77,6 +78,16 @@ const Votes = ({
     }
   };
 
+  const handleSave = async () => {
+    const path = "/question/" + questionId;
+    await saveQuestion({
+      hasSaved: hasSaved!,
+      path,
+      questionId: questionId!,
+      userId,
+    });
+  };
+
   return (
     <div className="flex items-center gap-1">
       <div className="flex justify-end gap-1 text-end">
@@ -122,6 +133,7 @@ const Votes = ({
                 ? "/assets/icons/star-filled.svg"
                 : "/assets/icons/star.svg"
             }
+            onClick={handleSave}
             width={18}
             className="cursor-pointer"
             height={18}

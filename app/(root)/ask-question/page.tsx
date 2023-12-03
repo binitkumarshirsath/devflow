@@ -5,8 +5,6 @@ import { getUserById } from "@/lib/actions/user.action";
 
 const AskAQuestion = async () => {
   const { userId } = auth();
-  console.log(userId);
-
   if (!userId) redirect("/sign-in");
   const user = await getUserById(userId);
   const authorId = JSON.stringify(user._id);

@@ -11,9 +11,10 @@ interface Props {
   data: AnswerProps;
   userId: string;
   questionId: string;
+  hasSaved: boolean;
 }
 
-const AnswerCard = ({ data, userId, questionId }: Props) => {
+const AnswerCard = ({ data, userId, questionId, hasSaved }: Props) => {
   return (
     <div className="flex h-full w-full flex-col">
       <div className="flex items-center justify-between">
@@ -36,6 +37,7 @@ const AnswerCard = ({ data, userId, questionId }: Props) => {
         <div>
           <Votes
             type="answer"
+            hasSaved={hasSaved}
             answerId={JSON.parse(JSON.stringify(data._id))}
             downvotes={data.downvotes.length}
             upvotes={data.upvotes.length}

@@ -147,3 +147,10 @@ export interface GetUserStatsParams {
 export interface DeleteUserParams {
   clerkId: string;
 }
+
+export interface SaveQuestion {
+  questionId: string;
+  userId: string;
+  path: string;
+  hasSaved: boolean;
+}

@@ -19,8 +19,6 @@ interface Props {
 }
 
 const UserAnswerBox = ({ user, question }: Props) => {
-  console.log(user, question);
-
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof answerSchema>>({

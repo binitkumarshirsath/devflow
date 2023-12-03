@@ -4,10 +4,13 @@ import Question from "@/database/models/question.model";
 import Tag from "@/database/models/tag.model";
 import {
   GetQuestionByIdParams,
+  GetSavedQuestionsParams,
+  SaveQuestion,
   createQuestionProps,
   getQuestionsProps,
 } from "./types/shared.types";
 import { revalidatePath } from "next/cache";
+import User from "@/database/models/user.model";
 
 export const createQuestion = async ({
   authorId,
@@ -63,7 +66,24 @@ export const createQuestion = async ({
   revalidatePath(path);
 };
 
-export const getQuestions = async (props: getQuestionsProps) => {
+export const getQuestion = async ({ questionId }: GetQuestionByIdParams) => {
+  try {
+    connectDB();
+    if (!questionId.match(/^[0-9a-fA-F]{24}$/)) {
+      throw new Error("Invalid object id");
+    }
+    // Yes, it's a valid ObjectId, proceed with `findById` call.
+    const question = await Question.findById({ _id: questionId })
+      .populate("author")
+      .populate("tags");
+    return question;
+  } catch (err) {
+    console.error("Error while fetching question with id", err);
+    throw err;
+  }
+};
+
+export const getQuestions = async (params: getQuestionsProps) => {
   try {
     connectDB();
     const questions = await Question.find({})
@@ -81,19 +101,54 @@ export const getQuestions = async (props: getQuestionsProps) => {
   }
 };
 
-export const getQuestion = async ({ questionId }: GetQuestionByIdParams) => {
+export const getUserSavedQuestions = async (
+  params: GetSavedQuestionsParams
+) => {
   try {
-    connectDB();
-    if (!questionId.match(/^[0-9a-fA-F]{24}$/)) {
-      throw new Error("Invalid object id");
-    }
-    // Yes, it's a valid ObjectId, proceed with `findById` call.
-    const question = await Question.findById({ _id: questionId })
-      .populate("author")
-      .populate("tags");
-    return question;
+    await connectDB();
+    const { clerkId } = params;
+    const questions = await User.findOne({ clerkId }).populate({
+      path: "saved",
+      populate: {
+        path: "tags author",
+      },
+    });
+    return questions?.saved;
   } catch (err) {
-    console.error("Error while fetching question with id", err);
+    console.error("Error while fetching saved questions", err);
+    throw err;
+  }
+};
+
+export const saveQuestion = async (params: SaveQuestion) => {
+  try {
+    await connectDB();
+    const { questionId, userId, path, hasSaved } = params;
+    let query = {};
+
+    if (hasSaved) {
+      query = {
+        $pull: {
+          saved: questionId,
+        },
+      };
+    } else {
+      query = {
+        $addToSet: {
+          saved: questionId,
+        },
+      };
+    }
+
+    const updatedUser = await User.findByIdAndUpdate({ _id: userId }, query, {
+      new: true,
+    });
+
+    revalidatePath(path);
+
+    return updatedUser;
+  } catch (err) {
+    console.error("Error while saving question", err);
     throw err;
   }
 };

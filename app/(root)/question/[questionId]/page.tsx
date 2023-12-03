@@ -117,6 +117,7 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
           {answers.map((answer, index) => (
             <AnswerCard
               data={answer}
+              hasSaved={user.saved.includes(questionId)}
               userId={user._id}
               questionId={questionId}
               key={index}

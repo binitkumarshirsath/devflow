@@ -62,7 +62,6 @@ export const downvoteQuestion = async (params: QuestionVoteParams) => {
   try {
     const { hasdownVoted, hasupVoted, questionId, path, userId } = params;
     await connectDB();
-    console.log(typeof questionId, typeof userId);
 
     let query = {};
     if (hasdownVoted) {
