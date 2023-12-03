@@ -1,5 +1,5 @@
 import { BADGE_CRITERIA } from "@/constants";
-import { ObjectId } from "mongoose";
+
 export interface SidebarLink {
   imgURL: string;
   route: string;
@@ -46,6 +46,7 @@ export interface BadgeCounts {
 export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA;
 
 export interface AnswerProps {
+  _id: string;
   content: string;
   createdAt: Date;
   author: {
@@ -54,6 +55,6 @@ export interface AnswerProps {
     clerkId: string;
     picture: string;
   };
-  upvotes: [ObjectId];
-  downvotes: [ObjectId];
+  upvotes: [string];
+  downvotes: [string];
 }

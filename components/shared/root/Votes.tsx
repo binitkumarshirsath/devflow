@@ -1,12 +1,18 @@
 "use client";
 
-import { downvoteQuestion, upvoteQuestion } from "@/lib/actions/votes.action";
+import {
+  downvoteAnswer,
+  downvoteQuestion,
+  upvoteAnswer,
+  upvoteQuestion,
+} from "@/lib/actions/votes.action";
 import Image from "next/image";
 import React from "react";
 
 interface Props {
   userId: string;
   questionId?: string;
+  answerId?: string;
   hasUpvoted: boolean;
   upvotes: number;
   downvotes: number;
@@ -24,27 +30,50 @@ const Votes = ({
   type,
   userId,
   hasSaved,
+  answerId,
 }: Props) => {
   const handleVote = async (action: "upvote" | "downvote") => {
     const path = "/question/" + questionId;
-
-    if (action === "upvote") {
-      await upvoteQuestion({
-        hasdownVoted: hasDownVoted,
-        hasupVoted: hasUpvoted,
-        questionId: questionId!,
-        userId,
-        path,
-      });
+    if (type === "question") {
+      if (action === "upvote") {
+        await upvoteQuestion({
+          hasdownVoted: hasDownVoted,
+          hasupVoted: hasUpvoted,
+          questionId: questionId!,
+          userId,
+          path,
+        });
+      }
+      if (action === "downvote") {
+        await downvoteQuestion({
+          hasdownVoted: hasDownVoted,
+          hasupVoted: hasUpvoted,
+          questionId: questionId!,
+          userId,
+          path,
+        });
+      }
     }
-    if (action === "downvote") {
-      await downvoteQuestion({
-        hasdownVoted: hasDownVoted,
-        hasupVoted: hasUpvoted,
-        questionId: questionId!,
-        userId,
-        path,
-      });
+
+    if (type === "answer") {
+      if (action === "upvote") {
+        await upvoteAnswer({
+          answerId: answerId!,
+          hasdownVoted: hasDownVoted,
+          hasupVoted: hasUpvoted,
+          path,
+          userId,
+        });
+      }
+      if (action === "downvote") {
+        await downvoteAnswer({
+          path,
+          answerId: answerId!,
+          hasdownVoted: hasDownVoted,
+          hasupVoted: hasUpvoted,
+          userId,
+        });
+      }
     }
   };
 

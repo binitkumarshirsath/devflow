@@ -6,11 +6,10 @@ import ParseHTML from "../root/ParseHTML";
 import { AnswerProps } from "@/types";
 import Link from "next/link";
 import Votes from "../root/Votes";
-import { ObjectId } from "mongoose";
 
 interface Props {
   data: AnswerProps;
-  userId: ObjectId;
+  userId: string;
   questionId: string;
 }
 
@@ -37,12 +36,13 @@ const AnswerCard = ({ data, userId, questionId }: Props) => {
         <div>
           <Votes
             type="answer"
+            answerId={JSON.parse(JSON.stringify(data._id))}
             downvotes={data.downvotes.length}
             upvotes={data.upvotes.length}
             hasDownVoted={data.downvotes.includes(userId)}
             hasUpvoted={data.upvotes.includes(userId)}
             questionId={questionId}
-            userId={JSON.stringify(userId)}
+            userId={userId}
           />
         </div>
       </div>

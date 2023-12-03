@@ -1,9 +1,10 @@
 "use server";
 
 import Question from "@/database/models/question.model";
-import { QuestionVoteParams } from "./types/shared.types";
+import { AnswerVoteParams, QuestionVoteParams } from "./types/shared.types";
 import { revalidatePath } from "next/cache";
 import { connectDB } from "@/database/connection";
+import Answer from "@/database/models/answer.model";
 
 export const upvoteQuestion = async (params: QuestionVoteParams) => {
   try {
@@ -98,6 +99,95 @@ export const downvoteQuestion = async (params: QuestionVoteParams) => {
     return question;
   } catch (err) {
     console.error("Error while downvoting the question", err);
+    throw err;
+  }
+};
+
+export const upvoteAnswer = async (params: AnswerVoteParams) => {
+  try {
+    const { answerId, hasdownVoted, hasupVoted, path, userId } = params;
+    await connectDB();
+    let query = {};
+    if (hasupVoted) {
+      query = {
+        $pull: {
+          upvotes: userId,
+        },
+      };
+    } else if (hasdownVoted) {
+      query = {
+        $pull: {
+          downvotes: userId,
+        },
+        $addToSet: {
+          upvotes: userId,
+        },
+      };
+    } else {
+      query = {
+        $addToSet: {
+          upvotes: userId,
+        },
+      };
+    }
+
+    const answer = await Answer.findOneAndUpdate({ _id: answerId }, query, {
+      new: true,
+    });
+
+    revalidatePath(path);
+    return answer;
+  } catch (err) {
+    console.error("Error while upvoting the answer", err);
+    throw err;
+  }
+};
+
+export const downvoteAnswer = async (params: AnswerVoteParams) => {
+  try {
+    await connectDB();
+    const { answerId, hasdownVoted, hasupVoted, path, userId } = params;
+
+    let query = {};
+
+    if (hasupVoted) {
+      query = {
+        $pull: {
+          upvotes: userId,
+        },
+        $addToSet: {
+          downvotes: userId,
+        },
+      };
+    } else if (hasdownVoted) {
+      query = {
+        $pull: {
+          downvotes: userId,
+        },
+      };
+    } else {
+      query = {
+        $addToSet: {
+          downvotes: userId,
+        },
+      };
+    }
+
+    const answer = await Answer.findOneAndUpdate(
+      {
+        _id: answerId,
+      },
+      query,
+      {
+        new: true,
+      }
+    );
+
+    revalidatePath(path);
+
+    return answer;
+  } catch (err) {
+    console.error("Error while downvoting answer", err);
     throw err;
   }
 };
