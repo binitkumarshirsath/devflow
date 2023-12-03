@@ -35,7 +35,7 @@ const UserCard = async ({ user }: Props) => {
           width={200}
           height={200}
           alt="user-img"
-          className="bg-circle"
+          className="bg-circle max-h-20 object-contain"
         />
       </Link>
       <div className="h2-bold mt-4 flex flex-col text-center font-spaceGrotesk font-semibold">

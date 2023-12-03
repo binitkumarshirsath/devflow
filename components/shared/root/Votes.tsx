@@ -1,5 +1,6 @@
 "use client";
 
+import { upvoteQuestion } from "@/lib/actions/votes.action";
 import Image from "next/image";
 import React from "react";
 
@@ -24,11 +25,26 @@ const Votes = ({
   userId,
   hasSaved,
 }: Props) => {
+  const handleVote = async (action: "upvote" | "downvote") => {
+    const path = "/question/" + questionId;
+
+    if (action === "upvote") {
+      await upvoteQuestion({
+        hasdownVoted: hasDownVoted,
+        hasupVoted: hasUpvoted,
+        questionId: questionId!,
+        userId,
+        path,
+      });
+    }
+  };
+
   return (
     <div className="flex items-center gap-1">
       <div className="flex justify-end gap-1 text-end">
         <Image
           alt="upvote"
+          onClick={() => handleVote("upvote")}
           src={
             hasUpvoted
               ? "/assets/icons/upvoted.svg"
@@ -36,6 +52,7 @@ const Votes = ({
           }
           width={18}
           height={18}
+          className="cursor-pointer"
         />
         <div className="flex-center background-light700_dark400 min-w-[18px] rounded-sm p-1">
           <p className="subtle-medium text-dark400_light900">{upvotes}</p>
@@ -44,12 +61,14 @@ const Votes = ({
       <div className="flex justify-end gap-1 text-end">
         <Image
           alt="downvote"
+          onClick={() => handleVote("downvote")}
           src={
             hasDownVoted
               ? "/assets/icons/downvoted.svg"
               : "/assets/icons/downvote.svg"
           }
           width={18}
+          className="cursor-pointer"
           height={18}
         />
         <div className="flex-center background-light700_dark400 min-w-[18px] rounded-sm p-1">
@@ -66,6 +85,7 @@ const Votes = ({
                 : "/assets/icons/star.svg"
             }
             width={18}
+            className="cursor-pointer"
             height={18}
           />
         )}
