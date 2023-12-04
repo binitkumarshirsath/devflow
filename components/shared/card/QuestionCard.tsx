@@ -1,9 +1,9 @@
-import { QuestionProps } from "@/app/(root)/(home)/page";
 import { formatDate } from "@/lib/utils";
 import React from "react";
 import Metric from "./Metric";
 import RenderTags from "../root/RenderTags";
 import Link from "next/link";
+import { QuestionProps } from "@/types";
 
 interface Props {
   question: QuestionProps;
@@ -33,7 +33,7 @@ const QuestionCard = ({ question }: Props) => {
           createdAt={question.createdAt}
           label={question.author.name}
           size={20}
-          href={`profile/${question.author.id}`}
+          href={`profile/${question.author._id}`}
         />
         <div className="flex gap-4">
           <Metric

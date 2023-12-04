@@ -25,6 +25,7 @@ const questionSchema = new mongoose.Schema<IQuestion>(
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
 
     tags: [

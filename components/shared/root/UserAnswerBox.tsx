@@ -11,6 +11,7 @@ import { postAnswer } from "@/lib/actions/answer.action";
 
 /*
 https://github.com/shadcn-ui/ui/issues/800
+https://github.com/shadcn-ui/ui/issues/800#issuecomment-1717240139
 */
 
 interface Props {

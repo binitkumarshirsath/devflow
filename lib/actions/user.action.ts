@@ -10,6 +10,7 @@ import {
 } from "./types/shared.types";
 import Question from "@/database/models/question.model";
 import Answer from "@/database/models/answer.model";
+import Tag from "@/database/models/tag.model";
 
 export const createUser = async (data: CreateUserParams) => {
   try {
@@ -31,7 +32,7 @@ export const getUserById = async (userId: string) => {
     if (!user) throw new Error("User not found");
     return user;
   } catch (err) {
-    console.log("Something went wrong while fetching user", err);
+    console.error("Something went wrong while fetching user", err);
     throw err;
   }
 };
@@ -80,8 +81,33 @@ export const getUserInfo = async (params: GetUserStatsParams) => {
     const { userId } = params;
     const user = await User.findById(userId);
     const questionCount = await Question.countDocuments({ author: userId });
+    const questions = await Question.find({ author: userId }).populate([
+      {
+        path: "author",
+        model: User,
+      },
+      {
+        path: "tags",
+        model: Tag,
+      },
+    ]);
     const answerCount = await Answer.countDocuments({ author: userId });
-    return { questionCount, answerCount, user };
+    const answers = await Answer.find({ author: userId })
+      .sort({ upvoted: -1 })
+      .populate([
+        {
+          path: "question",
+          model: Question,
+          select: "title ",
+        },
+        {
+          path: "author",
+          model: User,
+          select: "name picture",
+        },
+      ]);
+
+    return { questionCount, answerCount, user, questions, answers };
   } catch (err) {
     console.error("Error while fetching user info", err);
     throw err;

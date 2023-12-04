@@ -8,6 +8,7 @@ import Image from "next/image";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import TabView from "@/components/shared/root/TabView";
+import { AnswerProps, QuestionProps } from "@/types";
 
 interface Props {
   params: {
@@ -15,9 +16,46 @@ interface Props {
   };
 }
 
+const tags = [
+  {
+    tag: "nextjs",
+    count: 35,
+  },
+  {
+    tag: "reactjs",
+    count: 10,
+  },
+  {
+    tag: "html",
+    count: 15,
+  },
+  {
+    tag: "css",
+    count: 20,
+  },
+];
+
 const ProfileDetails = async ({ params: { userId } }: Props) => {
   const { userId: clerkId } = auth();
-  const { user, answerCount, questionCount } = await getUserInfo({ userId });
+  const {
+    user,
+    answerCount,
+    questionCount,
+    answers,
+    questions,
+  }: {
+    user: any;
+    answerCount: number;
+    questionCount: number;
+    answers: AnswerProps[];
+    questions: QuestionProps[];
+  } = (await getUserInfo({ userId })) as {
+    user: any;
+    answerCount: number;
+    questionCount: number;
+    answers: AnswerProps[];
+    questions: QuestionProps[];
+  };
 
   return (
     <div className="flex h-full w-full flex-col font-montserrat">
@@ -106,9 +144,27 @@ const ProfileDetails = async ({ params: { userId } }: Props) => {
         </div>
       </div>
 
-      {/* tabs */}
-      <div className="max-md:mt-5 md:mt-10">
-        <TabView />
+      {/* tabs and top tags */}
+      <div className="grid grid-cols-4 gap-x-5  max-md:mt-5  md:mt-10 ">
+        <div className="col-span-3">
+          <TabView questions={questions} answers={answers} />
+        </div>
+        <div className="col-span-1">
+          <h2>Top Tags</h2>
+          {tags.map(({ tag, count }, index) => {
+            return (
+              <div
+                key={index}
+                className="flex items-center justify-between py-4 "
+              >
+                <div className="rounded-sm bg-light-800 px-3 py-2 font-montserrat text-sm text-light-400 dark:bg-dark-300 dark:text-light-500">
+                  {tag}
+                </div>
+                <div>{count}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

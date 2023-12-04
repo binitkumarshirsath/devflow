@@ -7,31 +7,7 @@ import Questions from "@/components/shared/root/Questions";
 import SearchBar from "@/components/shared/root/SearchBar";
 import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
-
-export interface QuestionProps {
-  _id: string; // Change to string to accommodate ObjectId
-  title: string;
-  tags: {
-    id: string; // Change to string to accommodate ObjectId
-    name: string;
-  }[];
-  author: {
-    id: string; // Change to string to accommodate ObjectId
-    name: string;
-    picture: string;
-  };
-  createdAt: string; // Change to string, then parse it into Date in your component
-  upvotes: {
-    id: string;
-    userID: string;
-  }[];
-  downvotes: {
-    id: string;
-    userID: string;
-  }[];
-  views: number;
-  answers: any[]; // Change to the actual type for answers if available
-}
+import { QuestionProps } from "@/types";
 
 export default async function Home() {
   const result = await getQuestions({});

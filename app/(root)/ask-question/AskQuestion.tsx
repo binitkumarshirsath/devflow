@@ -54,7 +54,7 @@ const AskQuestion = ({ authorId }: Props) => {
         setLoading(false);
         router.push("/");
       })
-      .catch((e) => console.log("Error while creating question", e))
+      .catch((e) => console.error("Error while creating question", e))
       .finally(() => setLoading(false));
   }
 

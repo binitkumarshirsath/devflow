@@ -1,12 +1,11 @@
 import Link from "next/link";
 import React from "react";
 
-interface Item {
-  name: string;
-  id: string;
-}
 interface Props {
-  item: Item[];
+  item: {
+    name: string;
+    id: string;
+  }[];
 }
 
 const RenderTags = ({ item }: Props) => {

@@ -45,6 +45,38 @@ export interface BadgeCounts {
 }
 export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA;
 
+export interface TagProps {
+  id: string;
+  name: string;
+}
+
+export interface UserProps {
+  _id: string;
+  clerkId: string;
+  name: string;
+  username: string;
+  picture: string;
+}
+
+export interface QuestionProps {
+  _id: string;
+  title: string;
+  content: string;
+  tags: TagProps[];
+  createdAt: Date;
+  author: {
+    _id: string;
+    name: string;
+    clerkId: string;
+    picture: string;
+  };
+  answers: string[];
+  views: number;
+  upvotes: string[];
+  downvotes: string[];
+  author: UserProps;
+}
+
 export interface AnswerProps {
   _id: string;
   content: string;
@@ -55,6 +87,7 @@ export interface AnswerProps {
     clerkId: string;
     picture: string;
   };
+  question: QuestionProps;
   upvotes: [string];
   downvotes: [string];
 }
