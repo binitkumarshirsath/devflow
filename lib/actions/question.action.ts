@@ -23,7 +23,7 @@ export const createQuestion = async ({
 
   const question = await Question.create({
     title,
-    author: JSON.parse(authorId),
+    author: authorId,
     content,
   });
 

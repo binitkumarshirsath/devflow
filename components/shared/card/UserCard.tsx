@@ -29,7 +29,7 @@ const UserCard = async ({ user }: Props) => {
   return (
     <div className="background-light900_dark200 flex h-full w-full flex-col items-center justify-center py-3">
       {/* image */}
-      <Link href={"/users/" + user.id} className="my-4 w-fit">
+      <Link href={"/profile/" + user.id} className="my-4 w-fit">
         <Image
           src={user.picture!}
           width={200}
@@ -37,13 +37,14 @@ const UserCard = async ({ user }: Props) => {
           alt="user-img"
           className="bg-circle max-h-20 object-contain"
         />
+        <div className="h2-bold mt-4 flex flex-col text-center font-spaceGrotesk font-semibold">
+          {user.name}
+          <span className="text-dark500_light500  text-sm ">
+            @{user.username}
+          </span>
+        </div>
       </Link>
-      <div className="h2-bold mt-4 flex flex-col text-center font-spaceGrotesk font-semibold">
-        {user.name}
-        <span className="text-dark500_light500  text-sm ">
-          @{user.username}
-        </span>
-      </div>
+
       <div className="mt-4">
         <RenderTags item={tags} />
       </div>

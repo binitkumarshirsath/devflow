@@ -5,8 +5,11 @@ import {
   CreateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  GetUserStatsParams,
   UpdateUserParams,
 } from "./types/shared.types";
+import Question from "@/database/models/question.model";
+import Answer from "@/database/models/answer.model";
 
 export const createUser = async (data: CreateUserParams) => {
   try {
@@ -67,6 +70,20 @@ export const getAllUsers = async (data: GetAllUsersParams) => {
     return users;
   } catch (err) {
     console.error("Error while fetching users", err);
+    throw err;
+  }
+};
+
+export const getUserInfo = async (params: GetUserStatsParams) => {
+  try {
+    await connectDB();
+    const { userId } = params;
+    const user = await User.findById(userId);
+    const questionCount = await Question.countDocuments({ author: userId });
+    const answerCount = await Answer.countDocuments({ author: userId });
+    return { questionCount, answerCount, user };
+  } catch (err) {
+    console.error("Error while fetching user info", err);
     throw err;
   }
 };

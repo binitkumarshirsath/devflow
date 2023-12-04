@@ -7,7 +7,7 @@ const AskAQuestion = async () => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
   const user = await getUserById(userId);
-  const authorId = JSON.stringify(user._id);
+  // const authorId = JSON.stringify(user._id);
 
   return (
     <div className="text-dark100_light900 flex flex-col gap-2">
@@ -15,7 +15,7 @@ const AskAQuestion = async () => {
         Ask a public question
       </div>
       <div>
-        <AskQuestion authorId={authorId} />
+        <AskQuestion authorId={user._id} />
       </div>
     </div>
   );

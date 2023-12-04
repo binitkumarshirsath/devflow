@@ -33,7 +33,7 @@ const QuestionCard = ({ question }: Props) => {
           createdAt={question.createdAt}
           label={question.author.name}
           size={20}
-          href={`author/${question.author.id}`}
+          href={`profile/${question.author.id}`}
         />
         <div className="flex gap-4">
           <Metric
