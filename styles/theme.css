@@ -146,6 +146,7 @@
 
   .bg-circle {
     clip-path: circle();
+    display: inline-block;
   }
   .primary-gradient {
     background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%);

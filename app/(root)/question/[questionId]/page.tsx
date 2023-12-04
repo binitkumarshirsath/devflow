@@ -32,13 +32,13 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
   return (
     <div className="flex w-full flex-col ">
       <div className="flex items-center justify-between">
-        <div className="text-dark400_light800 flex items-center  font-montserrat font-bold ">
+        <div className="text-dark400_light800 flex items-center  gap-4 font-montserrat font-bold">
           <Image
             src={question.author.picture}
             width={120}
             height={120}
             alt="user-pfp"
-            className="bg-circle ml-[-1.5rem]"
+            className="bg-circle  max-h-28 rounded-full object-cover"
           />
           <div>{question.author.name}</div>
         </div>

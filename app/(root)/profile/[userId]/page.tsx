@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import TabView from "@/components/shared/root/TabView";
 
 interface Props {
   params: {
@@ -21,15 +22,15 @@ const ProfileDetails = async ({ params: { userId } }: Props) => {
   return (
     <div className="flex h-full w-full flex-col font-montserrat">
       <div className="flex w-full justify-between ">
-        <div className="flex w-full max-md:flex-col">
+        <div className="flex w-full gap-4 max-md:flex-col">
           <Image
             alt="user-img"
             src={user.picture}
             width={200}
             height={200}
-            className="bg-circle ml-[-2.4rem] max-h-36 text-clip rounded-full object-cover"
+            className="bg-circle  max-h-28  rounded-full object-cover"
           />
-          <div className="flex flex-col justify-end max-md:mt-4 md:ml-[-2rem]">
+          <div className="flex flex-col justify-end gap-4">
             <div className=" text-dark100_light900 flex flex-col font-montserrat text-3xl font-semibold text-dark-300 max-sm:text-2xl ">
               {user.name.toUpperCase()}
               <span className="mt-1 text-sm">@{user.username}</span>
@@ -103,6 +104,11 @@ const ProfileDetails = async ({ params: { userId } }: Props) => {
             <BadgeCard medals={23} type="bronze" />
           </div>
         </div>
+      </div>
+
+      {/* tabs */}
+      <div className="max-md:mt-5 md:mt-10">
+        <TabView />
       </div>
     </div>
   );
