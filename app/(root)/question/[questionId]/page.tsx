@@ -15,6 +15,7 @@ import { AnswerProps } from "@/types";
 import MobileFilter from "@/components/shared/root/MobileFilter";
 import { AnswerFilters } from "@/constants/filters";
 import Votes from "@/components/shared/root/Votes";
+import NoResults from "@/components/shared/root/NoResults";
 
 interface Props {
   params: { questionId: string };
@@ -22,7 +23,19 @@ interface Props {
 
 const QuestionDetails = async ({ params: { questionId } }: Props) => {
   const { userId } = auth();
-  const user = await getUserById(userId!);
+  if (!userId)
+    return (
+      <NoResults
+        title="Please Signup to continue"
+        description="Get access to various questions and their solutions 🔥  ! Lets gooooo."
+        button={{
+          href: "/sign-up",
+          label: "Register",
+          classList: "mt-5",
+        }}
+      />
+    );
+  const user = await getUserById(userId);
   const question = await getQuestion({ questionId });
 
   const answers: AnswerProps[] = (await getAnswers({
