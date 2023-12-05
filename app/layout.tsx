@@ -5,6 +5,7 @@ import { inter, montserrat, spaceGrotesk } from "../lib/fonts/font";
 
 import { ThemeProvider } from "@/components/Theme/ThemeProvider";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "DevFlow",
@@ -34,6 +35,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
             {children}
           </ClerkProvider>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );
