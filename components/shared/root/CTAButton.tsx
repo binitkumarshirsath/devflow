@@ -11,6 +11,7 @@ export interface CTAButtonProps {
   size?: number;
   alt?: string;
   type?: string;
+  disabled?: boolean;
 }
 
 const CTAButton = ({
@@ -21,6 +22,7 @@ const CTAButton = ({
   alt,
   size,
   type,
+  disabled,
 }: CTAButtonProps) => {
   if (href) {
     return (
@@ -35,6 +37,7 @@ const CTAButton = ({
 
   return (
     <button
+      disabled={disabled}
       type={type as "button" | "submit" | "reset" | undefined}
       className={` ${classList} primary-gradient flex w-fit gap-2 rounded-lg px-4 py-3 font-spaceGrotesk font-medium text-light-800 max-sm:font-light`}
     >

@@ -5,6 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 import Image from "next/image";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   userId: string;
@@ -14,8 +15,11 @@ interface Props {
 
 const EditDelete = ({ userId, clerkId, questionId }: Props) => {
   const { toast } = useToast();
+  const router = useRouter();
   const path = "/";
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    router.push("/question/edit/" + questionId);
+  };
   const handleDelete = async () => {
     await deleteQuestion({
       path,

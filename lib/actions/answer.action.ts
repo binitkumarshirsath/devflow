@@ -1,6 +1,11 @@
 "use server";
+
 import Answer from "@/database/models/answer.model";
-import { CreateAnswerParams, GetAnswersParams } from "./types/shared.types";
+import {
+  CreateAnswerParams,
+  DeleteAnswerParams,
+  GetAnswersParams,
+} from "./types/shared.types";
 import { connectDB } from "@/database/connection";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
@@ -55,5 +60,31 @@ export const getAnswers = async ({ questionId }: GetAnswersParams) => {
   } catch (error) {
     console.error("Error while fetching answers", error);
     throw error;
+  }
+};
+
+export const deleteAnswer = async (params: DeleteAnswerParams) => {
+  try {
+    const { answerId, path } = params;
+    // remove the user id from questions , asnwers field
+    await Question.findOneAndUpdate(
+      {
+        answers: answerId,
+      },
+      {
+        $pull: {
+          answers: answerId,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    await Answer.findByIdAndDelete(answerId);
+    revalidatePath(path);
+  } catch (err) {
+    console.error("Error while deleting the answer", err);
+    throw err;
   }
 };

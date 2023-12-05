@@ -1,13 +1,13 @@
 import { auth } from "@clerk/nextjs";
-import AskQuestion from "./AskQuestion";
+
 import { redirect } from "next/navigation";
 import { getUserById } from "@/lib/actions/user.action";
+import QuestionForm from "@/components/form/QuestionForm";
 
 const AskAQuestion = async () => {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
   const user = await getUserById(userId);
-  // const authorId = JSON.stringify(user._id);
 
   return (
     <div className="text-dark100_light900 flex flex-col gap-2">
@@ -15,7 +15,7 @@ const AskAQuestion = async () => {
         Ask a public question
       </div>
       <div>
-        <AskQuestion authorId={user._id} />
+        <QuestionForm authorId={user._id} type="create" />
       </div>
     </div>
   );

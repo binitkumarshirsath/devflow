@@ -1,5 +1,6 @@
 import UserCard from "@/components/shared/card/UserCard";
 import MobileFilter from "@/components/shared/root/MobileFilter";
+import NoResults from "@/components/shared/root/NoResults";
 import SearchBar from "@/components/shared/root/SearchBar";
 import { UserFilters } from "@/constants/filters";
 import { IUser } from "@/database/models/user.model";
@@ -31,6 +32,18 @@ const Community = async () => {
 
         {/* Render users */}
 
+        {users.length === 0 && (
+          <NoResults
+            title="No users found ! Be the first to register 🚀"
+            description="Be the first one to be part of this great community!"
+            button={{
+              label: "Sign-up",
+              alt: "signup",
+              classList: "mt-5 ",
+              href: "sign-up",
+            }}
+          />
+        )}
         <div className="mt-10 grid gap-4 sm:mt-4 md:mt-14 md:grid-cols-2 lg:grid-cols-3  ">
           {users.map((user) => (
             <UserCard key={user._id} user={user} />

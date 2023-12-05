@@ -1,31 +1,40 @@
 "use client";
+
+import { createQuestion, editQuestion } from "@/lib/actions/question.action";
+import { questionSchema } from "@/lib/validators";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { Input } from "../ui/input";
 import React, { useState } from "react";
-import * as z from "zod";
-import CTAButton from "@/components/shared/root/CTAButton";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import CTAButton from "../shared/root/CTAButton";
+import RichTextEditor from "../shared/root/RichTextEditor";
 import {
   Form,
-  FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
+  FormDescription,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { questionSchema } from "@/lib/validators";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from "../ui/form";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { createQuestion } from "@/lib/actions/question.action";
-import { useRouter } from "next/navigation";
-
-import RichTextEditor from "@/components/shared/root/RichTextEditor";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   authorId: string;
+  type: "create" | "edit";
+  data?: string;
 }
 
-const AskQuestion = ({ authorId }: Props) => {
+const QuestionForm = ({ authorId, type, data }: Props) => {
+  const questionData = type === "edit" && data && JSON.parse(data);
+
+  const groupedTags = questionData.tags.map(
+    (tag: { name: string }) => tag.name
+  );
+
   const [loading, setLoading] = useState(false);
   const path = "/";
   const router = useRouter();
@@ -34,28 +43,44 @@ const AskQuestion = ({ authorId }: Props) => {
   const form = useForm<z.infer<typeof questionSchema>>({
     resolver: zodResolver(questionSchema),
     defaultValues: {
-      title: "",
-      tags: [],
-      content: "",
+      title: type === "edit" ? questionData.title : "",
+      tags: type === "edit" ? groupedTags : [],
+      content: type === "edit" ? questionData.content : "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof questionSchema>) {
+  async function onSubmit(values: z.infer<typeof questionSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setLoading(true);
-    const data = {
-      ...values,
-      authorId,
-      path,
-    };
-    createQuestion(data)
-      .then(() => {
-        setLoading(false);
-        router.push("/");
-      })
-      .catch((e) => console.error("Error while creating question", e))
-      .finally(() => setLoading(false));
+
+    if (type === "create") {
+      const data = {
+        ...values,
+        authorId,
+        path,
+      };
+      await createQuestion(data);
+
+      toast({
+        title: "Question added successfully.",
+      });
+    }
+
+    if (type === "edit") {
+      const data = {
+        questionId: questionData._id,
+        title: values.title,
+        content: values.content,
+        path,
+      };
+      await editQuestion(data);
+      toast({
+        title: "Question edited successfully!",
+      });
+    }
+    setLoading(false);
+    router.push("/");
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>, field: any) {
@@ -120,7 +145,7 @@ const AskQuestion = ({ authorId }: Props) => {
               <FormControl className="bg-dark-400">
                 <RichTextEditor
                   onBlur={field.onBlur}
-                  initialValue="Start describing your question..."
+                  initialValue={questionData.content}
                   onChange={field.onChange}
                   value={field.value}
                 />
@@ -144,7 +169,10 @@ const AskQuestion = ({ authorId }: Props) => {
               <FormControl>
                 <>
                   <Input
-                    placeholder="Enter tags..."
+                    disabled={type === "edit"}
+                    placeholder={
+                      type === "edit" ? "Tags are not editable" : "Enter tags  "
+                    }
                     className="background-light800_dark400 border-none font-spaceGrotesk ring-0 focus:ring-0 focus:ring-offset-0 "
                     onChange={(e) => handleChange(e)}
                     onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
@@ -159,22 +187,25 @@ const AskQuestion = ({ authorId }: Props) => {
                         key={index}
                       >
                         {tag}
-                        <Image
-                          onClick={() => handleRemoveTag(tag, field)}
-                          src={"/assets/icons/close.svg"}
-                          width={10}
-                          height={10}
-                          alt="clear tag"
-                          className="absolute right-1 top-1 cursor-pointer  dark:invert"
-                        />
+                        {type === "create" && (
+                          <Image
+                            onClick={() => handleRemoveTag(tag, field)}
+                            src={"/assets/icons/close.svg"}
+                            width={10}
+                            height={10}
+                            alt="clear tag"
+                            className="absolute right-1 top-1 cursor-pointer  dark:invert"
+                          />
+                        )}
                       </span>
                     ))}
                   </div>
                 </>
               </FormControl>
               <FormDescription className="paragraph-regular text-light-500">
-                Add up to 5 tags to describe what your question is about. Start
-                typing to see suggestions
+                {type === "create" &&
+                  `Add up to 5 tags to describe what your question is about. Start
+                typing to see suggestions`}
               </FormDescription>
               <FormMessage className="text-red-500" />
             </FormItem>
@@ -182,6 +213,7 @@ const AskQuestion = ({ authorId }: Props) => {
         />
         <div className="flex w-full justify-end ">
           <CTAButton
+            disabled={loading}
             label={`${loading ? "Loading...." : "Submit"}`}
             type="submit"
             classList="py px-10 flex"
@@ -192,4 +224,4 @@ const AskQuestion = ({ authorId }: Props) => {
   );
 };
 
-export default AskQuestion;
+export default QuestionForm;

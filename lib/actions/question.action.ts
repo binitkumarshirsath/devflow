@@ -14,6 +14,7 @@ import {
 import { revalidatePath } from "next/cache";
 import User from "@/database/models/user.model";
 import Answer from "@/database/models/answer.model";
+import Interaction from "@/database/models/interaction.model";
 
 export const createQuestion = async ({
   authorId,
@@ -184,6 +185,8 @@ export const deleteQuestion = async (params: DeleteQuestionParams) => {
     await connectDB();
     // delete from user saved
     // delete subsequent answers
+    // delete interactions
+    // remove from tags
     // delete question
     const { path, questionId } = params;
     await User.findOneAndUpdate(
@@ -203,6 +206,21 @@ export const deleteQuestion = async (params: DeleteQuestionParams) => {
     await Answer.deleteMany({
       question: questionId,
     });
+
+    await Interaction.deleteMany({
+      question: questionId,
+    });
+
+    await Tag.updateMany(
+      {
+        questions: questionId,
+      },
+      {
+        $pull: {
+          questions: questionId,
+        },
+      }
+    );
 
     await Question.findByIdAndDelete({
       _id: questionId,
