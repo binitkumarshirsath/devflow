@@ -31,9 +31,9 @@ interface Props {
 const QuestionForm = ({ authorId, type, data }: Props) => {
   const questionData = type === "edit" && data && JSON.parse(data);
 
-  const groupedTags = questionData.tags.map(
-    (tag: { name: string }) => tag.name
-  );
+  const groupedTags =
+    type === "edit" &&
+    questionData.tags.map((tag: { name: string }) => tag.name);
 
   const [loading, setLoading] = useState(false);
   const path = "/";

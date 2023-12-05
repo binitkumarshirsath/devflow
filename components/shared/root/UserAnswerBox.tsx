@@ -8,6 +8,7 @@ import { z } from "zod";
 import RichTextEditor from "./RichTextEditor";
 import CTAButton from "./CTAButton";
 import { postAnswer } from "@/lib/actions/answer.action";
+import { useToast } from "@/components/ui/use-toast";
 
 /*
 https://github.com/shadcn-ui/ui/issues/800
@@ -21,7 +22,7 @@ interface Props {
 
 const UserAnswerBox = ({ user, question }: Props) => {
   const [loading, setLoading] = useState(false);
-
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof answerSchema>>({
     resolver: zodResolver(answerSchema),
     defaultValues: {
@@ -38,6 +39,10 @@ const UserAnswerBox = ({ user, question }: Props) => {
       question,
     });
     setLoading(false);
+    toast({
+      title: "Answer posted successfully.",
+    });
+    form.setValue("content", "");
   }
 
   return (

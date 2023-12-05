@@ -11,6 +11,7 @@ import {
 import Question from "@/database/models/question.model";
 import Answer from "@/database/models/answer.model";
 import Tag from "@/database/models/tag.model";
+import { revalidatePath } from "next/cache";
 
 export const createUser = async (data: CreateUserParams) => {
   try {
@@ -45,7 +46,7 @@ export const updateUserById = async (data: UpdateUserParams) => {
       data.updateData,
       { new: true }
     );
-
+    revalidatePath("/profile");
     return updatedUser;
   } catch (error) {
     console.error("Error while updating user", error);

@@ -37,3 +37,10 @@ export const questionSchema = z.object({
 export const answerSchema = z.object({
   content: z.string().min(10),
 });
+
+export const userSchema = z.object({
+  name: z.string().min(3).optional(),
+  portfolioWebsite: z.string().min(3).optional(),
+  location: z.string().max(10).optional(),
+  bio: z.string().min(3).optional(),
+});

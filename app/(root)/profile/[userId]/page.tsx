@@ -120,7 +120,7 @@ const ProfileDetails = async ({ params: { userId } }: Props) => {
         <div className="end-0 flex ">
           <SignedIn>
             {user.clerkId === clerkId && (
-              <Link href={"/profile/edit/" + user._id}>
+              <Link href={"/profile/edit/"}>
                 <Button className="background-light800_dark400 px-5 py-2">
                   Edit Profile
                 </Button>
