@@ -232,3 +232,18 @@ export const deleteQuestion = async (params: DeleteQuestionParams) => {
     throw err;
   }
 };
+
+export const getHotQuestions = async () => {
+  try {
+    await connectDB();
+    const questions = await Question.find({}).sort({
+      upvotes: -1,
+      views: -1,
+    });
+
+    return questions;
+  } catch (err) {
+    console.error("Error while getting questions", err);
+    throw err;
+  }
+};

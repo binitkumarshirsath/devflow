@@ -56,3 +56,32 @@ export const getTagQuestions = async ({ tagId }: GetQuestionsByTagIdParams) => {
     throw err;
   }
 };
+
+export const getHotTags = async () => {
+  try {
+    await connectDB();
+    const tags = await Tag.aggregate([
+      {
+        $project: {
+          name: 1,
+          questionCount: {
+            $size: "$questions",
+          },
+        },
+      },
+      {
+        $sort: {
+          questionCount: -1,
+        },
+      },
+      {
+        $limit: 5,
+      },
+    ]);
+
+    return tags;
+  } catch (err) {
+    console.error("Error while fetching top tags", err);
+    throw err;
+  }
+};
