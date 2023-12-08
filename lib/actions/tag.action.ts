@@ -7,11 +7,22 @@ import {
 import { connectDB } from "@/database/connection";
 import Question from "@/database/models/question.model";
 import User from "@/database/models/user.model";
+import { FilterQuery } from "mongoose";
 
-export const getAllTags = async (data: GetAllTagsParams) => {
+export const getAllTags = async (params: GetAllTagsParams) => {
   try {
     connectDB();
-    const tags = await Tag.find({});
+    let query: FilterQuery<typeof Tag> = {};
+    const { searchQuery } = params;
+    if (searchQuery) {
+      query = {
+        name: {
+          $regex: new RegExp(searchQuery, "i"),
+        },
+      };
+    }
+
+    const tags = await Tag.find(query).sort({ createdAt: -1 });
     return tags;
   } catch (err) {
     console.error("Error while fetching tags", err);

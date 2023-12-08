@@ -6,20 +6,26 @@ import { ITag } from "@/database/models/tag.model";
 import { getAllTags } from "@/lib/actions/tag.action";
 import React from "react";
 
-const Tag = async () => {
-  const data = {};
-  const tags: ITag[] = await getAllTags(data);
+interface Props {
+  searchParams: {
+    q: string;
+  };
+}
+
+const Tag = async ({ searchParams: { q } }: Props) => {
+  const tags: ITag[] = await getAllTags({ searchQuery: q });
 
   return (
     <div className="text-dark100_light900 flex flex-col gap-2 ">
       <div className=" font-montserrat text-3xl font-semibold text-dark-300 dark:text-light-700 max-sm:text-2xl ">
-        Community
+        Tags
       </div>
       <div className="mt-5 flex flex-col">
         <div className="flex items-center gap-4  max-sm:flex-col">
           <div className="w-full">
             <SearchBar
-              name="users"
+              route="/tags"
+              name="tags"
               placeholder="Search by tag name...  "
               classList="max-h-12 text-sm font-montserrat font-base"
             />
