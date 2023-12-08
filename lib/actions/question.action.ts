@@ -15,7 +15,7 @@ import { revalidatePath } from "next/cache";
 import User from "@/database/models/user.model";
 import Answer from "@/database/models/answer.model";
 import Interaction from "@/database/models/interaction.model";
-import { FilterQuery, Query } from "mongoose";
+import { FilterQuery } from "mongoose";
 
 export const createQuestion = async ({
   authorId,
@@ -126,13 +126,31 @@ export const getUserSavedQuestions = async (
 ) => {
   try {
     await connectDB();
-    const { clerkId } = params;
+    const { clerkId, searchQuery } = params;
+    const query: FilterQuery<typeof Question> = {};
+    if (searchQuery) {
+      query.$or = [
+        {
+          title: {
+            $regex: new RegExp(searchQuery, "i"),
+          },
+        },
+        {
+          content: {
+            $regex: new RegExp(searchQuery, "i"),
+          },
+        },
+      ];
+    }
+
     const questions = await User.findOne({ clerkId }).populate({
       path: "saved",
+      match: query,
       populate: {
         path: "tags author",
       },
     });
+
     return questions?.saved;
   } catch (err) {
     console.error("Error while fetching saved questions", err);
