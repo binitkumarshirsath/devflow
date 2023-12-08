@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import moment from "moment";
+import qs from "query-string";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,4 +24,45 @@ export function formatDate(date: Date | string) {
   } else {
     return `${Math.floor(duration.asSeconds())} seconds ago`;
   }
+}
+
+// form url
+interface FormUrlParams {
+  params: string;
+  key: string;
+  value: string;
+}
+
+export function formUrlQuery({ params, key, value }: FormUrlParams) {
+  const currentURL = qs.parse(params);
+
+  currentURL[key] = value;
+
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentURL,
+    },
+    { skipNull: true }
+  );
+}
+
+interface ClearUrlQueryParams {
+  params: string;
+  keysToRemove: string[];
+}
+export function clearUrlQuery({ params, keysToRemove }: ClearUrlQueryParams) {
+  const currentURL = qs.parse(params);
+
+  keysToRemove.forEach((key) => delete currentURL[key]);
+
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentURL,
+    },
+    {
+      skipNull: true,
+    }
+  );
 }

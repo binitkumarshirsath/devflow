@@ -9,10 +9,17 @@ import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
 import { QuestionProps } from "@/types";
 
-export default async function Home() {
-  const result = await getQuestions({});
+interface Props {
+  searchParams: {
+    q: string;
+  };
+}
+
+export default async function Home({ searchParams: { q } }: Props) {
+  const result = await getQuestions({ searchQuery: q });
   const questions: QuestionProps[] = (result?.questions ||
     []) as QuestionProps[];
+
   return (
     <div className="text-dark100_light900  flex w-full flex-col gap-2 ">
       <div className="flex-between mb-6 w-full">
@@ -26,6 +33,7 @@ export default async function Home() {
           placeholder="Search questions..."
           name="questionsSearch"
           classList=""
+          route="/"
         />
         {/* Filters for tab and small devices */}
         <MobileFilter filters={HomePageFilters} />

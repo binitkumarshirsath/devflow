@@ -1,6 +1,6 @@
 import { getHotQuestions } from "@/lib/actions/question.action";
 import { getHotTags } from "@/lib/actions/tag.action";
-import console from "console";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -8,7 +8,6 @@ import React from "react";
 const RightSideBar = async () => {
   const topQuestionsData = await getHotQuestions();
   const topTags = await getHotTags();
-  console.log(topTags);
 
   return (
     <aside className="  background-light900_dark200 no-scrollbar sticky right-0  top-0 h-screen overflow-y-auto px-4 max-xl:hidden xl:w-[325px]">
