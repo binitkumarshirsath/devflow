@@ -12,6 +12,7 @@ import Question from "@/database/models/question.model";
 import Answer from "@/database/models/answer.model";
 import Tag from "@/database/models/tag.model";
 import { revalidatePath } from "next/cache";
+import { FilterQuery } from "mongoose";
 
 export const createUser = async (data: CreateUserParams) => {
   try {
@@ -65,10 +66,27 @@ export const deleteUserById = async (data: DeleteUserParams) => {
   }
 };
 
-export const getAllUsers = async (data: GetAllUsersParams) => {
+export const getAllUsers = async (params: GetAllUsersParams) => {
   try {
     connectDB();
-    const users = await User.find({}).sort({ createdAt: -1 });
+    const { searchQuery } = params;
+    const query: FilterQuery<typeof User> = {};
+    if (searchQuery) {
+      query.$or = [
+        {
+          name: {
+            $regex: new RegExp(searchQuery, "i"),
+          },
+        },
+        {
+          username: {
+            $regex: new RegExp(searchQuery, "i"),
+          },
+        },
+      ];
+    }
+
+    const users = await User.find(query).sort({ createdAt: -1 });
     return users;
   } catch (err) {
     console.error("Error while fetching users", err);

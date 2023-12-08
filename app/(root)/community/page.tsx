@@ -7,8 +7,16 @@ import { IUser } from "@/database/models/user.model";
 import { getAllUsers } from "@/lib/actions/user.action";
 import React from "react";
 
-const Community = async () => {
-  const data = {};
+interface Props {
+  searchParams: {
+    q: string;
+  };
+}
+
+const Community = async ({ searchParams: { q } }: Props) => {
+  const data = {
+    searchQuery: q,
+  };
   const users: IUser[] = await getAllUsers(data);
 
   return (
@@ -20,6 +28,7 @@ const Community = async () => {
         <div className="flex items-center gap-4  max-sm:flex-col">
           <div className="w-full">
             <SearchBar
+              route="/community"
               name="users"
               placeholder="Search amazing minds here..."
               classList="max-h-12 text-sm font-montserrat font-base"
