@@ -5,23 +5,24 @@ import SearchBar from "@/components/shared/root/SearchBar";
 import { QuestionFilters } from "@/constants/filters";
 import { getUserSavedQuestions } from "@/lib/actions/question.action";
 import { auth } from "@clerk/nextjs";
-import console from "console";
+
 import React from "react";
 
 interface Props {
   searchParams: {
     q: string;
+    filter: string;
   };
 }
 
-const Collections = async ({ searchParams: { q } }: Props) => {
+const Collections = async ({ searchParams: { q, filter } }: Props) => {
   const { userId } = auth();
 
   const questions = await getUserSavedQuestions({
     clerkId: userId!,
     searchQuery: q,
+    filter,
   });
-  console.log(questions);
 
   return (
     <div className="text-dark100_light900  flex w-full flex-col gap-2 ">

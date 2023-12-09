@@ -27,8 +27,6 @@ function MobileFilter({ filters, visible }: Props) {
   const router = useRouter();
 
   const handleClick = (value: string) => {
-    console.log(value);
-
     if (value === active) {
       setActive("");
       const removeUrl = clearUrlQuery({
@@ -48,7 +46,7 @@ function MobileFilter({ filters, visible }: Props) {
     }
   };
   return (
-    <Select onValueChange={(value) => handleClick(value)}>
+    <Select onValueChange={(value) => handleClick(value)} defaultValue={active}>
       <SelectTrigger
         className={`placeholder 
       background-light800_dark300

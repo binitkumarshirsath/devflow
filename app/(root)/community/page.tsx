@@ -2,7 +2,6 @@ import UserCard from "@/components/shared/card/UserCard";
 import MobileFilter from "@/components/shared/root/MobileFilter";
 import NoResults from "@/components/shared/root/NoResults";
 import SearchBar from "@/components/shared/root/SearchBar";
-import { filters } from "@/constants";
 import { UserFilters } from "@/constants/filters";
 import { IUser } from "@/database/models/user.model";
 import { getAllUsers } from "@/lib/actions/user.action";

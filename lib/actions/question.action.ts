@@ -143,7 +143,7 @@ export const getUserSavedQuestions = async (
 ) => {
   try {
     await connectDB();
-    const { clerkId, searchQuery } = params;
+    const { clerkId, searchQuery, filter } = params;
     const query: FilterQuery<typeof Question> = {};
     if (searchQuery) {
       query.$or = [
@@ -160,14 +160,52 @@ export const getUserSavedQuestions = async (
       ];
     }
 
+    let sortQuery: FilterQuery<typeof Question> = {};
+
+    if (filter) {
+      switch (filter) {
+        case "most_recent":
+          sortQuery = {
+            createdAt: -1,
+          };
+          break;
+        case "oldest":
+          sortQuery = {
+            createdAt: 1,
+          };
+          break;
+        case "most_voted":
+          sortQuery = {
+            upvotes: -1,
+          };
+          break;
+        case "most_viewed":
+          sortQuery = {
+            views: -1,
+          };
+          break;
+        case "most_answered":
+          sortQuery = {};
+          break;
+
+        default:
+          break;
+      }
+    }
+
     const questions = await User.findOne({ clerkId }).populate({
       path: "saved",
       match: query,
+
       populate: {
         path: "tags author",
       },
+      options: {
+        sort: sortQuery,
+      },
     });
 
+    revalidatePath("/collections");
     return questions?.saved;
   } catch (err) {
     console.error("Error while fetching saved questions", err);
