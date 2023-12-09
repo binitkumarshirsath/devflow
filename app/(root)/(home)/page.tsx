@@ -12,11 +12,12 @@ import { QuestionProps } from "@/types";
 interface Props {
   searchParams: {
     q: string;
+    filter: string;
   };
 }
 
-export default async function Home({ searchParams: { q } }: Props) {
-  const result = await getQuestions({ searchQuery: q });
+export default async function Home({ searchParams: { q, filter } }: Props) {
+  const result = await getQuestions({ searchQuery: q, filter });
   const questions: QuestionProps[] = (result?.questions ||
     []) as QuestionProps[];
 

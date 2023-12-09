@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 
 import {
@@ -9,6 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Filter } from "@/types";
+import { useRouter, useSearchParams } from "next/navigation";
+import { clearUrlQuery, formUrlQuery } from "@/lib/utils";
 
 interface Props {
   filters: Filter[];
@@ -16,8 +20,35 @@ interface Props {
 }
 
 function MobileFilter({ filters, visible }: Props) {
+  const searchParams = useSearchParams();
+  const q = searchParams.get("filter");
+  const [active, setActive] = React.useState(q || "");
+
+  const router = useRouter();
+
+  const handleClick = (value: string) => {
+    console.log(value);
+
+    if (value === active) {
+      setActive("");
+      const removeUrl = clearUrlQuery({
+        keysToRemove: ["filter"],
+        params: searchParams.toString(),
+      });
+      router.push(removeUrl, { scroll: false });
+    } else {
+      setActive(value);
+      const newUrl = formUrlQuery({
+        key: "filter",
+        params: searchParams.toString(),
+        value,
+      });
+
+      router.push(newUrl, { scroll: false });
+    }
+  };
   return (
-    <Select>
+    <Select onValueChange={(value) => handleClick(value)}>
       <SelectTrigger
         className={`placeholder 
       background-light800_dark300
