@@ -9,6 +9,7 @@ import {
 import { connectDB } from "@/database/connection";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
+import { FilterQuery } from "mongoose";
 
 export const postAnswer = async ({
   author,
@@ -48,13 +49,44 @@ export const postAnswer = async ({
   }
 };
 
-export const getAnswers = async ({ questionId }: GetAnswersParams) => {
+export const getAnswers = async ({ questionId, sortBy }: GetAnswersParams) => {
   try {
     await connectDB();
 
+    let sortQuery: FilterQuery<typeof Answer> = {};
+    if (sortBy) {
+      switch (sortBy) {
+        case "highestUpvotes":
+          sortQuery = {
+            upvotes: -1,
+          };
+          break;
+        case "old":
+          sortQuery = {
+            createdAt: 1,
+          };
+          break;
+        case "lowestUpvotes":
+          sortQuery = {
+            upvotes: 1,
+          };
+          break;
+        case "recent":
+          sortQuery = {
+            createdAt: -1,
+          };
+          break;
+
+        default:
+          break;
+      }
+    }
+
     const answers = await Answer.find({
       question: questionId,
-    }).populate("author");
+    })
+      .populate("author")
+      .sort(sortQuery);
 
     return answers;
   } catch (error) {

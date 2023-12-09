@@ -19,9 +19,15 @@ import NoResults from "@/components/shared/root/NoResults";
 
 interface Props {
   params: { questionId: string };
+  searchParams: {
+    filter: string;
+  };
 }
 
-const QuestionDetails = async ({ params: { questionId } }: Props) => {
+const QuestionDetails = async ({
+  params: { questionId },
+  searchParams: { filter },
+}: Props) => {
   const { userId } = auth();
   if (!userId)
     return (
@@ -40,6 +46,7 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
 
   const answers: AnswerProps[] = (await getAnswers({
     questionId,
+    sortBy: filter,
   })) as AnswerProps[];
 
   return (
@@ -97,14 +104,7 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
           <ParseHTML data={question.content} />
           <RenderTags item={question.tags} />
         </div>
-        <div className="flex items-center justify-between font-montserrat  text-sm font-semibold md:mt-5">
-          <div className="primary-text-gradient font-montserrat">
-            {answers.length + " answers"}
-          </div>
-          <div>
-            <MobileFilter filters={AnswerFilters} visible={true} />
-          </div>
-        </div>
+
         <div className="mt-4 flex items-center justify-between font-montserrat  text-sm md:mt-5">
           <div className="text-dark500_light700 font-montserrat">
             Write your answer here :
@@ -124,7 +124,14 @@ const QuestionDetails = async ({ params: { questionId } }: Props) => {
           user={JSON.stringify(user._id)}
           question={JSON.stringify(question._id)}
         />
-
+        <div className="flex items-center justify-between font-montserrat  text-sm font-semibold md:mt-5">
+          <div className="primary-text-gradient font-montserrat">
+            {answers.length + " answers"}
+          </div>
+          <div>
+            <MobileFilter filters={AnswerFilters} visible={true} />
+          </div>
+        </div>
         {/* Answers of question */}
         <div className="mt-4 flex h-full w-full flex-col">
           {answers.map((answer, index) => (
