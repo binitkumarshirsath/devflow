@@ -91,7 +91,7 @@ export const getQuestion = async ({ questionId }: GetQuestionByIdParams) => {
 export const getQuestions = async (params: getQuestionsProps) => {
   try {
     connectDB();
-    const { filter, page, pageSize, searchQuery } = params;
+    const { filter, searchQuery } = params;
 
     const query: FilterQuery<typeof Question> = {};
     let sortQuery: FilterQuery<typeof Question> = {};
@@ -185,7 +185,9 @@ export const getUserSavedQuestions = async (
           };
           break;
         case "most_answered":
-          sortQuery = {};
+          sortQuery = {
+            answers: -1,
+          };
           break;
 
         default:

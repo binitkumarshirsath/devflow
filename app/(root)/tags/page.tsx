@@ -9,11 +9,12 @@ import React from "react";
 interface Props {
   searchParams: {
     q: string;
+    filter: string;
   };
 }
 
-const Tag = async ({ searchParams: { q } }: Props) => {
-  const tags: ITag[] = await getAllTags({ searchQuery: q });
+const Tag = async ({ searchParams: { q, filter } }: Props) => {
+  const tags: ITag[] = await getAllTags({ searchQuery: q, filter });
 
   return (
     <div className="text-dark100_light900 flex flex-col gap-2 ">

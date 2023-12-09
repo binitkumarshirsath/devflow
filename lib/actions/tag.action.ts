@@ -13,7 +13,7 @@ export const getAllTags = async (params: GetAllTagsParams) => {
   try {
     connectDB();
     let query: FilterQuery<typeof Tag> = {};
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
     if (searchQuery) {
       query = {
         name: {
@@ -22,7 +22,37 @@ export const getAllTags = async (params: GetAllTagsParams) => {
       };
     }
 
-    const tags = await Tag.find(query).sort({ createdAt: -1 });
+    let sortQuery: FilterQuery<typeof Tag> = {};
+
+    if (filter) {
+      switch (filter) {
+        case "popular":
+          sortQuery = {
+            followers: -1,
+          };
+          break;
+        case "recent":
+          sortQuery = {
+            createdAt: -1,
+          };
+          break;
+        case "name":
+          sortQuery = {
+            name: 1,
+          };
+          break;
+        case "old":
+          sortQuery = {
+            createdAt: 1,
+          };
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    const tags = await Tag.find(query).sort(sortQuery);
     return tags;
   } catch (err) {
     console.error("Error while fetching tags", err);
