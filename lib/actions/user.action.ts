@@ -69,7 +69,7 @@ export const deleteUserById = async (data: DeleteUserParams) => {
 export const getAllUsers = async (params: GetAllUsersParams) => {
   try {
     connectDB();
-    const { searchQuery } = params;
+    const { searchQuery, filter } = params;
     const query: FilterQuery<typeof User> = {};
     if (searchQuery) {
       query.$or = [
@@ -86,7 +86,30 @@ export const getAllUsers = async (params: GetAllUsersParams) => {
       ];
     }
 
-    const users = await User.find(query).sort({ createdAt: -1 });
+    let sortFilter: FilterQuery<typeof User> = {};
+    if (filter) {
+      switch (filter) {
+        case "new_users":
+          sortFilter = {
+            createdAt: -1,
+          };
+          break;
+        case "old_users":
+          sortFilter = {
+            createdAt: 1,
+          };
+          break;
+        case "top_contributors":
+          sortFilter = {
+            reputation: -1,
+          };
+          break;
+        default:
+          break;
+      }
+    }
+
+    const users = await User.find(query).sort(sortFilter);
     return users;
   } catch (err) {
     console.error("Error while fetching users", err);

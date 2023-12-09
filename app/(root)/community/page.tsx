@@ -2,6 +2,7 @@ import UserCard from "@/components/shared/card/UserCard";
 import MobileFilter from "@/components/shared/root/MobileFilter";
 import NoResults from "@/components/shared/root/NoResults";
 import SearchBar from "@/components/shared/root/SearchBar";
+import { filters } from "@/constants";
 import { UserFilters } from "@/constants/filters";
 import { IUser } from "@/database/models/user.model";
 import { getAllUsers } from "@/lib/actions/user.action";
@@ -10,14 +11,15 @@ import React from "react";
 interface Props {
   searchParams: {
     q: string;
+    filter: string;
   };
 }
 
-const Community = async ({ searchParams: { q } }: Props) => {
-  const data = {
+const Community = async ({ searchParams: { q, filter } }: Props) => {
+  const users: IUser[] = await getAllUsers({
     searchQuery: q,
-  };
-  const users: IUser[] = await getAllUsers(data);
+    filter,
+  });
 
   return (
     <div className="text-dark100_light900 flex flex-col gap-2 ">
