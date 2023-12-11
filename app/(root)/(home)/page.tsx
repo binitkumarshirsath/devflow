@@ -9,6 +9,7 @@ import SearchBar from "@/components/shared/root/SearchBar";
 import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
 import { QuestionProps } from "@/types";
+import result from "postcss/lib/result";
 
 interface Props {
   searchParams: {
@@ -21,7 +22,11 @@ interface Props {
 export default async function Home({
   searchParams: { q, filter, page },
 }: Props) {
-  const result = await getQuestions({ searchQuery: q, filter });
+  const result = await getQuestions({
+    searchQuery: q,
+    filter,
+    page: page ? +page : 1,
+  });
   const questions: QuestionProps[] = (result?.questions ||
     []) as QuestionProps[];
 
@@ -61,7 +66,7 @@ export default async function Home({
         ) : (
           <Questions questions={questions} />
         )}
-        <Pagination page={page ? +page : 1} hasNext={result.hasNext} />
+        <Pagination page={page ? +page : 1} hasNext={result?.hasNext} />
       </div>
     </>
   );

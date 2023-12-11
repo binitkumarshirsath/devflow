@@ -40,7 +40,7 @@ const Pagination = ({
       </p>
       <Button
         disabled={hasNext === false}
-        onClick={() => handleNavigation("prev")}
+        onClick={() => handleNavigation("next")}
         className={`${hasNext ? "background-light900_dark200 text-white" : ""}`}
       >
         Next

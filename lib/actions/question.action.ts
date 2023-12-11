@@ -91,7 +91,9 @@ export const getQuestion = async ({ questionId }: GetQuestionByIdParams) => {
 export const getQuestions = async (params: getQuestionsProps) => {
   try {
     connectDB();
-    const { filter, searchQuery } = params;
+    const { filter, searchQuery, page = 1, pageSize = 4 } = params;
+
+    const questionsToSkip = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof Question> = {};
     let sortQuery: FilterQuery<typeof Question> = {};
@@ -120,11 +122,14 @@ export const getQuestions = async (params: getQuestionsProps) => {
         };
         break;
       default:
+        sortQuery = { createdAt: -1 };
         break;
     }
 
     const questions = await Question.find(query)
       .populate(["tags", "author"])
+      .skip(questionsToSkip)
+      .limit(pageSize)
       .sort(sortQuery);
 
     if (!questions) {
@@ -132,7 +137,10 @@ export const getQuestions = async (params: getQuestionsProps) => {
       return { questions: [] };
     }
 
-    return { questions };
+    const totalQuestions = await Question.countDocuments();
+    const hasNext = totalQuestions > questionsToSkip + questions.length;
+
+    return { questions, hasNext };
   } catch (error) {
     console.error("Error while fetching questions", error);
   }
