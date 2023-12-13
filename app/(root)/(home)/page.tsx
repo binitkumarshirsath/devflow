@@ -9,7 +9,6 @@ import SearchBar from "@/components/shared/root/SearchBar";
 import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
 import { QuestionProps } from "@/types";
-import result from "postcss/lib/result";
 
 interface Props {
   searchParams: {
@@ -66,7 +65,10 @@ export default async function Home({
         ) : (
           <Questions questions={questions} />
         )}
-        <Pagination page={page ? +page : 1} hasNext={result?.hasNext} />
+        <Pagination
+          page={page ? +page : 1}
+          hasNext={result?.hasNext || false}
+        />
       </div>
     </>
   );

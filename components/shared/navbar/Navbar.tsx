@@ -20,7 +20,9 @@ const Navbar = () => {
           Dev<span className="h2-bold text-primary-500">Flow</span>
         </p>
       </Link>
-      <GlobalSearch />
+      <div className="mx-auto w-full">
+        <GlobalSearch />
+      </div>
       <div className="flex items-center gap-4">
         <ModeToggle />
         <SignedIn>

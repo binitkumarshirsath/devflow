@@ -64,6 +64,7 @@ const QuestionForm = ({ authorId, type, data }: Props) => {
 
       toast({
         title: "Question added successfully.",
+        className: "bg-[#1FD8A4] text-white outline-none",
       });
     }
 
