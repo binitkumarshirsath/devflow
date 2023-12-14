@@ -54,33 +54,38 @@ const QuestionForm = ({ authorId, type, data }: Props) => {
     // ✅ This will be type-safe and validated.
     setLoading(true);
 
-    if (type === "create") {
-      const data = {
-        ...values,
-        authorId,
-        path,
-      };
-      await createQuestion(data);
+    try {
+      if (type === "create") {
+        const data = {
+          ...values,
+          authorId,
+          path,
+        };
+        await createQuestion(data);
 
-      toast({
-        title: "Question added successfully.",
-        className: "bg-[#1FD8A4] text-white outline-none",
-      });
-    }
+        toast({
+          title: "Question added successfully.",
+          className: "bg-[#1FD8A4] text-white outline-none",
+        });
+      }
 
-    if (type === "edit") {
-      const data = {
-        questionId: questionData._id,
-        title: values.title,
-        content: values.content,
-        path,
-      };
-      await editQuestion(data);
-      toast({
-        title: "Question edited successfully!",
-      });
+      if (type === "edit") {
+        const data = {
+          questionId: questionData._id,
+          title: values.title,
+          content: values.content,
+          path,
+        };
+        await editQuestion(data);
+        toast({
+          title: "Question edited successfully!",
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
     router.push("/");
   }
 

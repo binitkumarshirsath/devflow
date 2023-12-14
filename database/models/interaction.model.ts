@@ -16,7 +16,7 @@ const interactionSchema = new Schema<IInteraction>(
     },
     action: {
       type: String,
-      enum: ["view", "upvote", "downvote", "comment"],
+      enum: ["view", "upvote", "downvote", "comment", "ask_question"],
       required: true,
     },
     question: {

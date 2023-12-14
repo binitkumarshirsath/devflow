@@ -5,6 +5,8 @@ import { AnswerVoteParams, QuestionVoteParams } from "./types/shared.types";
 import { revalidatePath } from "next/cache";
 import { connectDB } from "@/database/connection";
 import Answer from "@/database/models/answer.model";
+import User from "@/database/models/user.model";
+import Interaction from "@/database/models/interaction.model";
 
 export const upvoteQuestion = async (params: QuestionVoteParams) => {
   try {
@@ -49,6 +51,35 @@ export const upvoteQuestion = async (params: QuestionVoteParams) => {
       { new: true }
     );
 
+    // add +1 or remove 1 from the upvoters reputation
+    // add +10 or remove 10 from authors repu
+
+    await Interaction.findOneAndUpdate(
+      {
+        user: userId,
+        action: hasupVoted ? "upvote" : "downvote",
+        question: questionId,
+      },
+      {
+        user: userId,
+        action: hasupVoted ? "upvote" : "downvote",
+        question: questionId,
+      },
+      {
+        upsert: true,
+      }
+    );
+
+    await User.findByIdAndUpdate(userId, {
+      $inc: {
+        reputation: hasupVoted ? -1 : 1,
+      },
+    });
+    await User.findByIdAndUpdate(question.author, {
+      $inc: {
+        reputation: hasupVoted ? -2 : 2,
+      },
+    });
     revalidatePath(path);
 
     return question;

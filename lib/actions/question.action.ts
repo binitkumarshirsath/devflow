@@ -62,12 +62,32 @@ export const createQuestion = async ({
     tagDocuments.push(existingTag._id);
   }
 
-  await Question.findByIdAndUpdate(question._id, {
+  const updatedQuestion = await Question.findByIdAndUpdate(question._id, {
     $push: {
       tags: { $each: tagDocuments },
     },
   });
 
+  // add interaction
+  await Interaction.create({
+    user: authorId,
+    action: "ask_question",
+    question: question._id,
+    tags: updatedQuestion.tags,
+  });
+
+  // increase user reputation by 5
+  await User.findByIdAndUpdate(
+    authorId,
+    {
+      $inc: {
+        reputation: 5,
+      },
+    },
+    {
+      new: true,
+    }
+  );
   revalidatePath(path);
 };
 
@@ -335,10 +355,12 @@ export const deleteQuestion = async (params: DeleteQuestionParams) => {
 export const getHotQuestions = async () => {
   try {
     await connectDB();
-    const questions = await Question.find({}).sort({
-      upvotes: -1,
-      views: -1,
-    });
+    const questions = await Question.find({})
+      .sort({
+        upvotes: -1,
+        views: -1,
+      })
+      .limit(5);
 
     return questions;
   } catch (err) {
