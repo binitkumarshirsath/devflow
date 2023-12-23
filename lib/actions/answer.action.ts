@@ -10,6 +10,8 @@ import { connectDB } from "@/database/connection";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/models/question.model";
 import { FilterQuery } from "mongoose";
+import Interaction from "@/database/models/interaction.model";
+import User from "@/database/models/user.model";
 
 export const postAnswer = async ({
   author,
@@ -28,7 +30,7 @@ export const postAnswer = async ({
 
     revalidatePath(path);
 
-    await Question.findByIdAndUpdate(
+    const updatedQuestion = await Question.findByIdAndUpdate(
       {
         _id: JSON.parse(question),
       },
@@ -42,6 +44,39 @@ export const postAnswer = async ({
       }
     );
 
+    // add interaction
+    await Interaction.create({
+      user: JSON.parse(author),
+      action: "comment",
+      question: JSON.parse(question),
+      answer: answer._id,
+      tags: updatedQuestion.tags,
+    });
+
+    // increase the repu of commentator
+    await User.findOneAndUpdate(
+      {
+        user: JSON.parse(author),
+      },
+      {
+        $inc: {
+          reputation: 5,
+        },
+      }
+    );
+
+    // increase repu of question's author
+    const authorId = updatedQuestion.author;
+    await User.findOneAndUpdate(
+      {
+        _id: authorId,
+      },
+      {
+        $inc: {
+          reputation: 1,
+        },
+      }
+    );
     return answer;
   } catch (error) {
     console.error("Error while posting the answer", error);

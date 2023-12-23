@@ -70,14 +70,17 @@ export const upvoteQuestion = async (params: QuestionVoteParams) => {
       }
     );
 
+    // add/remove reputation to user
     await User.findByIdAndUpdate(userId, {
       $inc: {
         reputation: hasupVoted ? -1 : 1,
       },
     });
+
+    // add/remove reputation questions author
     await User.findByIdAndUpdate(question.author, {
       $inc: {
-        reputation: hasupVoted ? -2 : 2,
+        reputation: hasupVoted ? -5 : 5,
       },
     });
     revalidatePath(path);
@@ -125,6 +128,20 @@ export const downvoteQuestion = async (params: QuestionVoteParams) => {
       query,
       { new: true }
     );
+
+    // add/remove reputation to user
+    await User.findByIdAndUpdate(userId, {
+      $inc: {
+        reputation: hasdownVoted ? -1 : 1,
+      },
+    });
+
+    // add/remove reputation questions author
+    await User.findByIdAndUpdate(question.author, {
+      $inc: {
+        reputation: hasdownVoted ? -5 : 5,
+      },
+    });
     revalidatePath(path);
     return question;
   } catch (err) {
@@ -163,6 +180,22 @@ export const upvoteAnswer = async (params: AnswerVoteParams) => {
 
     const answer = await Answer.findOneAndUpdate({ _id: answerId }, query, {
       new: true,
+    });
+
+    await User.findOneAndUpdate(
+      {
+        _id: userId,
+      },
+      {
+        $inc: {
+          reputation: hasupVoted ? -1 : 1,
+        },
+      }
+    );
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: {
+        reputation: hasupVoted ? -5 : 5,
+      },
     });
 
     revalidatePath(path);
@@ -212,6 +245,22 @@ export const downvoteAnswer = async (params: AnswerVoteParams) => {
         new: true,
       }
     );
+
+    await User.findOneAndUpdate(
+      {
+        _id: userId,
+      },
+      {
+        $inc: {
+          reputation: hasdownVoted ? -1 : 1,
+        },
+      }
+    );
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: {
+        reputation: hasdownVoted ? -5 : 5,
+      },
+    });
 
     revalidatePath(path);
 
