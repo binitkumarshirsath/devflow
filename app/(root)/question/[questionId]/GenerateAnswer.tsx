@@ -48,7 +48,8 @@ const GenerateAnswer = ({ questionId, userId, question }: Props) => {
             toast({
               title:
                 "AI answer generation is disabled due to budget constraints.",
-              type: "foreground",
+              //   type: "foreground",
+              variant: "destructive",
             })
           }
           disabled={loading}
