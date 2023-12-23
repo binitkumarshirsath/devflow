@@ -6,7 +6,7 @@ import ParseHTML from "@/components/shared/root/ParseHTML";
 import Image from "next/image";
 import React from "react";
 import RenderTags from "@/components/shared/root/RenderTags";
-import UserAnswerBox from "@/components/shared/root/UserAnswerBox";
+
 import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
 import AnswerCard from "@/components/shared/card/AnswerCard";
@@ -16,6 +16,7 @@ import MobileFilter from "@/components/shared/root/MobileFilter";
 import { AnswerFilters } from "@/constants/filters";
 import Votes from "@/components/shared/root/Votes";
 import NoResults from "@/components/shared/root/NoResults";
+import GenerateAnswer from "./GenerateAnswer";
 
 interface Props {
   params: { questionId: string };
@@ -105,24 +106,10 @@ const QuestionDetails = async ({
           <RenderTags item={question.tags} />
         </div>
 
-        <div className="mt-4 flex items-center justify-between font-montserrat  text-sm md:mt-5">
-          <div className="text-dark500_light700 font-montserrat">
-            Write your answer here :
-          </div>
-          <button className="background-light800_dark400 flex items-center gap-2 rounded-lg  px-3 py-1 text-primary-500">
-            <Image
-              alt="ai-ans"
-              width={20}
-              height={20}
-              src={"/assets/icons/stars.svg"}
-            />
-            Generate AI answer
-          </button>
-        </div>
-
-        <UserAnswerBox
-          user={JSON.stringify(user._id)}
-          question={JSON.stringify(question._id)}
+        <GenerateAnswer
+          question={JSON.stringify(question)}
+          userId={JSON.stringify(user._id)}
+          questionId={JSON.stringify(question._id)}
         />
         <div className="flex items-center justify-between font-montserrat  text-sm font-semibold md:mt-5">
           <div className="primary-text-gradient font-montserrat">
